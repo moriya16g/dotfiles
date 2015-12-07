@@ -1,0 +1,200 @@
+;;; Language
+(set-language-environment "Japanese")
+
+;;; フォント
+;; abcdefghijklmnopqrstuvwxyz 
+;; ABCDEFGHIJKLMNOPQRSTUVWXYZ
+;; `1234567890-=\[];',./
+;; ?!@#$%^&*()_+|{}:"<>?
+;;
+;; 壱弐参四五壱弐参四五壱弐参四五壱弐参四五壱弐参四五壱弐参四五
+;; 123456789012345678901234567890123456789012345678901234567890
+;; ABCdeＡＢＣｄｅ
+;;
+;; ┌─────────────────────────────┐
+;; │　　　　　　　　　　　　　罫線                            │
+;; └─────────────────────────────┘
+(set-face-attribute 'default nil
+                     :family "EcoCoding"
+                    :height 90)
+(set-fontset-font
+ nil 'japanese-jisx0208
+  (font-spec :family "ＳＨ Ｇ30-M"))
+(set-fontset-font
+ nil 'katakana-jisx0201
+  (font-spec :family "ＳＨ Ｇ30-M"))
+(setq face-font-rescale-alist
+                '((".*メイリオ.*" . 1.0)
+                  (".*ＭＳ ゴシック.*" . 1.2)
+                  (".*ＭＳ 明朝.*" . 1.2)
+                  (".*Myrica M.*" . 1.1)
+                  (".*ＳＨ Ｇ30-M.*" . 1.0)
+                  (".*ARISAKA-等幅.*" . 1.1)
+                  (".*イワタ中明朝体V3.*" . 1.2)
+                  ("-cdac$" . 1.3)))
+
+;;; 行間
+(setq-default line-spacing 0)
+
+;;; C/migemo の設定
+(require 'migemo)
+(setq migemo-command "cmigemo")
+(setq migemo-options '("-q" "--emacs" "-i" "\g"))
+;; migemo-dict のパスを指定
+(setq migemo-dictionary "C:/APPZ/emacs/share/emacs/site-lisp/dict/cmigemo/migemo-dict")
+(setq migemo-user-dictionary nil)
+(setq migemo-regex-dictionary nil)
+;; migemo キャッシュ機能を利用する (有効にすると終了に時間がかかることがあるので無効にしておく…)
+;(setq migemo-use-pattern-alist t)
+;(setq migemo-use-frequent-pattern-alist t)
+;(setq migemo-pattern-alist-length 1024)
+;; migemo 辞書の文字コードを指定．
+(setq migemo-coding-system 'cp932-unix)
+;; migemo 初期化
+(load-library "migemo")
+(migemo-init)
+(setq search-whitespace-regexp nil) ;;migemo C-sでカーソルが飛ぶために必要
+
+;;; 音を鳴らさない
+(setq visible-bell t)
+
+;;; カラーテーマ
+(require 'color-theme)
+(color-theme-initialize)
+;(color-theme-charcoal-black) ;charcoal-black
+;(color-theme-renegade) ;Renegade
+(require 'zenburn) (zenburn) ; zenburn を適用する場合
+;(require 'monokai-theme) ; monokai を適用する場合
+;(require 'gotham-theme) ; gotham を適用する場合
+
+;;; Mew
+(autoload 'mew "mew" nil t)
+(autoload 'mew-send "mew" nil t)
+(autoload 'mew-user-agent-compose "mew" nil t)
+;; Mew でのパスワードのキャッシュを有効化
+(setq mew-use-cached-passwd t)
+;; Mew での機種依存文字表示
+(coding-system-put 'iso-2022-jp :decode-translation-table
+		 '(cp51932-decode japanese-ucs-cp932-to-jis-map))
+(coding-system-put 'iso-2022-jp :encode-translation-table
+		   '(cp51932-encode))
+;; 表示ウエイトをなくす
+(setq w32-pipe-read-delay 0)
+;; cygwin で GnuPG を使うために fakecygty を
+;(setq mw32-process-wrapper-alist
+;     '(("/\\(ssh\\|bash\\|tcsh\\|gpg\\|gpg[esvk]?\\)\\.exe" .
+;	 (nil . "fakecygpty.exe"))))
+;; ?/Mail の場所変更
+(setq mew-mail-path "c:/cygwin/home/moriya/Mail")
+
+;;; org-mode
+;(require 'org-install)
+;; 拡張子がorgのファイルを開いた時，自動的にorg-modeにする
+(add-to-list 'auto-mode-alist '("\\.org$" . org-mode))
+;; org-mode キーバインド
+(define-key global-map "\C-cl" 'org-store-link)
+(define-key global-map "\C-ca" 'org-agenda)
+(define-key global-map "\C-cr" 'org-remember)
+;; 行の折り返し表示する
+(setq org-startup-truncated nil)
+;; org-modeでの強調表示を可能にする
+(add-hook 'org-mode-hook 'turn-on-font-lock)
+;; オートインデントする
+(setq org-indent-mode t)
+;(global-font-lock-mode 1)                     ; すべてのバッファで有効
+(add-hook 'org-mode-hook 'turn-on-font-lock)  ; org-modeのバッファのみで有効
+;; org-default-notes-fileのディレクトリ
+(setq org-directory "d:/org/")
+;; org-default-notes-fileのファイル名
+(setq org-default-notes-file "00inbox.org")
+;; リンクをリターンキーで開く
+(setq org-return-follows-link t)
+;; インライン画像の横幅を強制リサイズする
+(setq org-image-actual-width '(640))
+;; TODO状態
+(setq org-todo-keywords
+      '((sequence "TODO(t)" "WAIT(w)" "|" "DONE(d)" "SOMEDAY(s)")))
+;; DONEの時刻を記録
+(setq org-log-done 'time)
+;; アジェンダ表示の対象ファイル
+(setq org-agenda-files (list org-directory))
+;; アジェンダ表示で下線を用いる
+(add-hook 'org-agenda-mode-hook '(lambda () (hl-line-mode 1)))
+(setq hl-line-face 'underline)
+;; 標準の祝日を利用しない
+(setq calendar-holidays nil)
+; mew for org-mode
+(setq org-modules '())
+(setq org-modules (append org-modules '(org-mew)))
+;(define-key mew-summary-mode-map "'" 'org-mew-search)
+(eval-after-load "mew-summary"
+  '(define-key mew-summary-mode-map "\C-o" 'org-mew-capture))
+;; 特定の拡張子を開くアプリケーション指定
+(setq org-file-apps
+      '(("\\.docx\\'" . default)
+        ("\\.pptx\\'" . default)
+        ("\\.xlsx\\'" . default)
+        ("\\.pdf\\'" . default)
+        ("\\.doc\\'" . default)
+        ("\\.xls\\'" . default)
+        ("\\.ppt\\'" . default)
+        (auto-mode . emacs)))
+;; imenu の探索する深さ
+(setq org-imenu-depth 4)
+
+;;; gtags
+(autoload 'gtags-mode "gtags" "" t)
+(setq gtags-mode-hook
+      '(lambda ()
+         (local-set-key "\M-t" 'gtags-find-tag)
+         (local-set-key "\M-r" 'gtags-find-rtag)
+         (local-set-key "\M-s" 'gtags-find-symbol)
+         (local-set-key "\C-t" 'gtags-pop-stack)
+         (local-set-key "\M-j" 'gtags-find-with-grep)
+         (local-set-key "\M-c" 'gtags-find-file)
+         ))
+
+;;; ruby-mode
+(setq ruby-indent-level 4)
+(setq ruby-indent-tabs-mode nil)
+
+;;; c-mode, c++-mode
+(add-hook 'c-mode-common-hook
+          '(lambda ()
+             ;;; K&R のスタイルを使う
+             (c-set-style "k&r")
+             ;;; インデント幅
+             (setq c-basic-offset 4)
+             (setq c-tab-always-indent t)
+                          (setq tab-width 4)
+             (setq indent-tabs-mode nil)
+             ))
+
+;;;zlc
+(require 'zlc)
+
+;;sr-speedbar
+(require 'sr-speedbar)
+(setq sr-speedbar-right-side nil)
+
+;; imenu-tree
+(add-hook 'org-mode-hook
+  (lambda()
+    (require 'imenu-tree)))
+(global-set-key (kbd "M-h") 'imenu-tree)
+
+;; backspace を C-h に
+(keyboard-translate ?\C-h ?\C-?)
+
+(setq shell-file-name "c:/cygwin/bin/zsh")
+
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(column-number-mode t)
+ '(display-battery-mode t)
+ '(display-time-mode t)
+ '(size-indication-mode t)
+ '(tool-bar-mode nil))
