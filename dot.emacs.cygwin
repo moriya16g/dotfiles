@@ -141,6 +141,11 @@
         (auto-mode . emacs)))
 ;; imenu の探索する深さ
 (setq org-imenu-depth 4)
+;; スピードコマンド有効化
+(setq org-use-speed-commands t)
+;; スピードコマンドで b で子ノードを別バッファに開く
+(setq org-speed-commands-user nil)
+(add-to-list 'org-speed-commands-user '("." call-interactively 'org-tree-to-indirect-buffer))
 
 ;;; gtags
 (autoload 'gtags-mode "gtags" "" t)
