@@ -84,7 +84,7 @@
 ;(setq mw32-process-wrapper-alist
 ;     '(("/\\(ssh\\|bash\\|tcsh\\|gpg\\|gpg[esvk]?\\)\\.exe" .
 ;	 (nil . "fakecygpty.exe"))))
-;; ?/Mail の場所変更
+;; ~/Mail の場所変更
 (setq mew-mail-path "c:/cygwin/home/moriya/Mail")
 
 ;;; org-mode
@@ -143,7 +143,7 @@
 (setq org-imenu-depth 4)
 ;; スピードコマンド有効化
 (setq org-use-speed-commands t)
-;; スピードコマンドで b で子ノードを別バッファに開く
+;; スピードコマンドで . で子ノードを別バッファに開く
 (setq org-speed-commands-user nil)
 (add-to-list 'org-speed-commands-user '("." call-interactively 'org-tree-to-indirect-buffer))
 
@@ -175,22 +175,23 @@
              (setq indent-tabs-mode nil)
              ))
 
-;;;zlc
+;;; zlc
 (require 'zlc)
 
-;;sr-speedbar
+;;; sr-speedbar
 (require 'sr-speedbar)
 (setq sr-speedbar-right-side nil)
 
-;; imenu-tree
+;;; imenu-tree
 (add-hook 'org-mode-hook
   (lambda()
     (require 'imenu-tree)))
 (global-set-key (kbd "M-h") 'imenu-tree)
 
-;; backspace を C-h に
+;;; backspace を C-h に
 (keyboard-translate ?\C-h ?\C-?)
 
+;;; 使用するシェルの場所
 (setq shell-file-name "c:/cygwin/bin/zsh")
 
 (custom-set-variables
