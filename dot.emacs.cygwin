@@ -158,6 +158,7 @@
          (local-set-key "\M-j" 'gtags-find-with-grep)
          (local-set-key "\M-c" 'gtags-find-file)
          ))
+(setq gtags-path-style 'relative)
 
 ;;; ruby-mode
 (setq ruby-indent-level 4)
