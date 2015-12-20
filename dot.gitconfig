@@ -1,0 +1,28 @@
+[user]
+  name = Shigeru Moriya
+  email = moriya@sarotti.net
+[color]
+  ui = auto
+  status = auto
+  diff = auto
+[alias]
+  co   = checkout
+  ci   = commit -v
+  st   = status
+  br   = branch
+  me   = merge
+  di   = diff
+  dife = diff master origin/master
+  up   = log
+  #pull = pull --rebase
+[core]
+  autocrlf  = false
+  safecrlf  = false
+  filemode  = false
+  quotepath = false
+  pager = less
+  editor = ~/bin/editor.sh
+[i18n]
+  commitencoding = UTF-8
+[http]
+  sslVerify = false
