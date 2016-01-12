@@ -36,6 +36,9 @@
 ;;; 行間
 (setq-default line-spacing 0)
 
+;;; 文字飾りを有効にする
+(setq w32-enable-synthesized-fonts t)
+
 ;;; ImageMagick
 (add-to-list 'dynamic-library-alist
 '(imagemagick "c:/cygwin/bin/cygMagickWand-6.Q16-2.dll"))
@@ -181,7 +184,10 @@
              ))
 
 ;;; zlc
-(require 'zlc)
+;(require 'zlc)
+;(zlc-mode t)
+;; 候補一覧を表示する際に、最初の項目を選択状態にする
+;(setq zlc-select-completion-immediately t)
 
 ;;; sr-speedbar
 (require 'sr-speedbar)
