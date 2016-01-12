@@ -36,6 +36,10 @@
 ;;; sŠÔ
 (setq-default line-spacing 0)
 
+;;; ImageMagick
+(add-to-list 'dynamic-library-alist
+'(imagemagick "c:/cygwin/bin/cygMagickWand-6.Q16-2.dll"))
+
 ;;; C/migemo ‚Ìİ’è
 (require 'migemo)
 (setq migemo-command "cmigemo")
