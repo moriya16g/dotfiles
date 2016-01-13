@@ -39,9 +39,9 @@
 ;;; •¶šü‚è‚ğ—LŒø‚É‚·‚é
 (setq w32-enable-synthesized-fonts t)
 
-;;; ImageMagick
-(add-to-list 'dynamic-library-alist
-'(imagemagick "c:/cygwin/bin/cygMagickWand-6.Q16-2.dll"))
+;(add-to-list 'dynamic-library-alist
+;'(imagemagick "c:/cygwin/bin/cygMagickWand-6.Q16-2.dll"))
+;'(imagemagick "C:/Program\ Files/ImageMagick-6.9.3-Q16/CORE_RL_wand_.dll"))
 
 ;;; C/migemo ‚Ìİ’è
 (require 'migemo)
@@ -93,6 +93,11 @@
 ;	 (nil . "fakecygpty.exe"))))
 ;; ~/Mail ‚ÌêŠ•ÏX
 (setq mew-mail-path "c:/cygwin/home/moriya/Mail")
+
+;;; Image+
+;; see https://github.com/mhayashi1120/Emacs-imagex
+(require 'image+)
+(imagex-auto-adjust-mode 1)
 
 ;;; org-mode
 ;(require 'org-install)
