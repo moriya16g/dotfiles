@@ -1,0 +1,164 @@
+;; ステータスバーに表示する情報
+;(setq *status-bar-format* "T") ; 標準
+(setq *status-bar-format* "cupT")
+
+;; C++
+;;インデントレベルの設定
+(setq c++-indent-level 4)
+;;インデントをタブで指定 
+;(setq ed::*c++-indent-tabs-mode* t)
+;;すべて半角スペースでインデントしたい場合 
+(setq ed::*c++-indent-tabs-mode* nil)
+
+;; C
+;;インデントレベルの設定
+(setq c-indent-level 4)
+;;インデントをタブで指定 
+;(setq ed::*c-indent-tabs-mode* t)
+;;すべて半角スペースでインデントしたい場合 
+(setq ed::*c-indent-tabs-mode* nil)
+
+;; GTAGS
+(export 'ed::gtags-mode "ed")
+(autoload 'ed::gtags-mode "gtags/gtags" t)
+(require "gtags/gtags-menu")
+;;; Emacs Lisp 移植キット
+(require "elisp")
+
+;;; gtags-mode
+(in-package "editor")
+(setq gtags-path-style 'relative)
+(setq *gtags-mode-hook*
+      #'(lambda ()
+          (local-set-key #\M-t 'gtags-find-tag)
+          (local-set-key #\M-r 'gtags-find-rtag)
+          (local-set-key #\M-s 'gtags-find-symbol)
+          (local-set-key #\M-e 'gtags-find-tag-from-here)
+          ;(local-set-key #\M-a 'gtags-pop-stack)
+          (local-set-key #\C-t 'gtags-pop-stack)
+          (local-set-key #\M-j 'gtags-find-with-grep)
+          (local-set-key #\M-c 'gtags-find-file-ext)
+          (local-set-key #\M-n 'gtags-find-next-tag)
+          (local-set-key #\M-p 'gtags-find-previous-tag)
+          (local-set-key #\M-. 'gtags-toggle-source)
+          ))
+
+(setq *gtags-select-mode-hook*
+      #'(lambda ()
+          (local-set-key #\M-a 'gtags-pop-stack)
+          (local-set-key #\PageUp 'previous-page-kept-selection)
+          (local-set-key #\PageDown 'next-page-kept-selection)
+          (local-set-key #\LBtnDown 'gtags-mouse-left-press)
+          (local-set-key #\M-n #'(lambda ()
+                                   (interactive)
+                                   (next-virtual-line)
+                                   (gtags-select-tag)))
+          (local-set-key #\M-p #'(lambda ()
+                                   (interactive)
+                                   (previous-virtual-line)
+                                   (gtags-select-tag)))
+          ))
+
+(add-hook '*c-mode-hook*
+          #'(lambda ()
+              (gtags-mode 1)
+              ;(gtags-make-complete-list);未対応
+              ))
+(add-hook '*c++-mode-hook*
+          #'(lambda ()
+              (gtags-mode 1)))
+(add-hook '*php-mode-hook*
+          #'(lambda ()
+              (gtags-mode 1)))
+(in-package "user")
+
+
+;;インクリメンタル・サーチ
+(require "isearch")
+
+;;migemo
+(require "migemo")
+(migemo-toggle t)
+
+;;cygwin
+(setq *eshell* "bash -i")
+
+;; Lua-mode
+(load-library "lua")
+(push '("\\.lua$" . lua-mode) *auto-mode-alist*)
+
+;; py-mode
+(load-library "py-mode")
+(push '("\\.py$" . py-mode) *auto-mode-alist*)
+
+;; ruby-mode for xyzzy
+(load-library "ruby-mode")
+(push '("\\.rb$" . ruby-mode) *auto-mode-alist*)
+; インデント量を変える。nilの時はタブを挿入
+;(setq *ruby-indent-column* 2)
+
+;; Shife + F10 で Apps キーを有効に
+(global-set-key #\S-F10 'apps-popup)
+
+;; TDT-mode
+(load-library "tdt")
+(push '("\\.tdt$" . tdt-mode) *auto-mode-alist*)
+
+;; outline-tree2
+(require "color")
+(require "win-window")
+(require "treeview/setup")
+(require "buf2html")
+(require "outline-tree/outline-tree")
+      ;; extended-key-translate-table 設定
+      (set-extended-key-translate-table exkey-C-tab #\F23)
+      (set-extended-key-translate-table exkey-C-return #\F20)
+      ;; Ctrl+Tab で Editor <-> TreeView
+      ; Editor -> TreeView
+      (require "treeview/setup")
+      (global-set-key #\F23 'treeview::treeview-focus-treeview)
+      ; TreeView (outline-tree) -> Editor
+      (require "outline-tree/outline-tree")
+      (define-key outline-tree2::*outline-tree-map*
+                  #\F23 'treeview::treeview-focus-editor)
+      ;; Ctrl+Ret で outline 更新
+      (global-set-key #\F20 'outline-tree2::outline-tree-create-outline-and-select-node)
+      (define-key outline-tree2::*outline-tree-map*
+                  #\F20 'outline-tree2::outline-tree-create-outline-and-select-node)
+
+;; ALt + [←/→] でバッファを切り替え
+(setq *next-buffer-in-tab-order* t) ; バッファ移動をタブ順に
+(global-set-key #\M-Right 'next-buffer) ; 前のバッファに移動 
+(global-set-key #\M-Left 'previous-buffer) ; 後のバッファに移動 
+
+;; ALt + [↑/↓] でウィンドウ(画面内で縦とか横とかに分割されている単位)を切り替え
+(global-set-key #\M-Up 'move-previous-window)
+(global-set-key #\M-Down 'other-window)
+
+;; 日時・時刻の挿入
+; C-i-d で日付挿入(Insert Date のつもり)
+; C-i-t で時刻挿入(Inserr Time のつもり)
+; (フォーマットの指定の書式は、UNIX の date コマンドに準じてるようだ)
+(defun insert-date()
+  (interactive)
+  (insert (format-date-string "%Y/%m/%d(%a)" ) )
+)
+(defun insert-time()
+  (interactive)
+  (insert (format-date-string "%H:%M:%S(%z)" ) )
+)
+(global-set-key '(#\C-x #\i #\d) 'insert-date)
+(global-set-key '(#\C-x #\i #\t) 'insert-time)
+;  夜更かし対応として 24-27時台はその様に表示させる
+;(defun time28()
+;  (interactive)
+;  (let ((Hstr (format-date-string "%H" )) (H28 nil))
+;    (setq H28 (parse-integer Hstr))
+;    (if (> 4 H28)  (setq H28 (+ H28 24)))
+;    (insert (format nil " ~2,'0D"  H28))
+;    (insert (format-date-string ":%M" ) )
+;    )
+;)
+
+;;デフォルトの文字コードをutf-8に
+(setq *default-fileio-encoding* *encoding-utf8n*)
