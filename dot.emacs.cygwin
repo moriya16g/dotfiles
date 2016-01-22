@@ -143,17 +143,13 @@
   '(define-key mew-summary-mode-map "\C-o" 'org-mew-capture))
 ;; 特定の拡張子を開くアプリケーション指定
 (setq org-file-apps
-      '(("\\.docx\\'" . default)
-        ("\\.pptx\\'" . default)
-        ("\\.xlsx\\'" . default)
+      '(("\\.docx?\\'" . default)
+        ("\\.pptx?\\'" . default)
+        ("\\.xlsx?\\'" . default)
         ("\\.pdf\\'" . default)
-        ("\\.doc\\'" . default)
-        ("\\.xls\\'" . default)
-        ("\\.ppt\\'" . default)
         ("\\.png\\'" . default)
         ("\\.gif\\'" . default)
-        ("\\.jpg\\'" . default)
-        ("\\.jpeg\\'" . default)
+        ("\\.jpe?g\\'" . default)
         (auto-mode . emacs)))
 ;; imenu の探索する深さ
 (setq org-imenu-depth 4)
