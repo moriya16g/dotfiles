@@ -94,6 +94,10 @@
 ;; ~/Mail の場所変更
 (setq mew-mail-path "c:/cygwin/home/moriya/Mail")
 
+;;; vc-mode
+;; Windows では vc git が遅いせいでファイルの保存に時間がかかってしまうため無効化
+(setq vc-handled-backends nil)
+
 ;;; Image+
 ;; see https://github.com/mhayashi1120/Emacs-imagex
 ;(require 'image+)
