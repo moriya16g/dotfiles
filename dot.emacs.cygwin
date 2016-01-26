@@ -74,7 +74,8 @@
 ;(require 'monokai-theme) ; monokai を適用する場合
 ;(require 'gotham-theme) ; gotham を適用する場合
 ;(require 'cherry-blossom-theme) ; cherry-blossom を適用する場合
-(require 'caroline-theme) ; caroline を適用する場合
+;(require 'caroline-theme) ; caroline を適用する場合
+(require 'caroline-m-theme) ; my caroline を適用する場合
 
 
 
