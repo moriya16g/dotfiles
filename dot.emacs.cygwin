@@ -167,6 +167,9 @@
 ;; スピードコマンドで . で子ノードを別バッファに開く
 (setq org-speed-commands-user nil)
 (add-to-list 'org-speed-commands-user '("." call-interactively 'org-tree-to-indirect-buffer))
+;; MobileOrg
+(setq org-mobile-directory "~/src/org_mobile")
+(setq org-mobile-inbox-for-pull "~/mem/8_mobileorg.org")
 
 ;;; gtags
 (autoload 'gtags-mode "gtags" "" t)
