@@ -54,5 +54,17 @@ PATH=/cygdrive/c/APPZ/hyperestraier:"$PATH" #HyperEastraier
 PATH=/home/moriya/bin:"$PATH"
 # aliases
 alias emacs=runemacs
+# Windowsコマンドの文字化け対策（要iconv）
+function wincmd() {
+    CMD=$1
+    shift
+    $CMD $* 2>&1 | iconv -f cp932 -t utf-8
+}
+alias ipconfig='wincmd ipconfig'
+alias netstat='wincmd netstat'
+alias tracert='wincmd tracert'
+alias netsh='wincmd netsh'
+alias cscript='wincmd cscript'
+alias tdt='wincmd tdt'
 # variables
 export TERM=cygwin
