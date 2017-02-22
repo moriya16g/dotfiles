@@ -1,4 +1,4 @@
-;;; Language
+;; Language
 (set-language-environment "Japanese")
 
 ;;; フォント
@@ -15,7 +15,8 @@
 ;; │　　　　　　　　　　　　　罫線                            │
 ;; └─────────────────────────────┘
 (set-face-attribute 'default nil
-                     :family "EcoCoding"
+;                     :family "EcoCoding"
+                      :family "Mononoki"
                     :height 90)
 (set-fontset-font
  nil 'japanese-jisx0208
@@ -28,7 +29,7 @@
                   (".*ＭＳ ゴシック.*" . 1.2)
                   (".*ＭＳ 明朝.*" . 1.2)
                   (".*Myrica M.*" . 1.1)
-                  (".*ＳＨ Ｇ30-M.*" . 1.0)
+                  (".*ＳＨ Ｇ30-M.*" . 1.1)
                   (".*ARISAKA-等幅.*" . 1.1)
                   (".*イワタ中明朝体V3.*" . 1.2)
                   ("-cdac$" . 1.3)))
@@ -39,9 +40,9 @@
 ;;; 文字飾りを有効にする
 (setq w32-enable-synthesized-fonts t)
 
-(add-to-list 'dynamic-library-alist
+;(add-to-list 'dynamic-library-alist
 ;'(imagemagick "c:/cygwin/bin/cygMagickWand-6.Q16-2.dll"))
-'(imagemagick "C:/Program\ Files/ImageMagick-6.9.3-Q16/CORE_RL_wand_.dll"))
+;'(imagemagick "C:/Program\ Files/ImageMagick-6.9.3-Q16/CORE_RL_wand_.dll"))
 
 ;;; C/migemo の設定
 (require 'migemo)
@@ -125,9 +126,9 @@
 ;(global-font-lock-mode 1)                     ; すべてのバッファで有効
 (add-hook 'org-mode-hook 'turn-on-font-lock)  ; org-modeのバッファのみで有効
 ;; org-default-notes-fileのディレクトリ
-(setq org-directory "~/mem/")
+(setq org-directory "~/usr/mem/")
 ;; org-default-notes-fileのファイル名
-(setq org-default-notes-file "0_inbox.org")
+(setq org-default-notes-file "0index.org")
 ;; リンクをリターンキーで開く
 (setq org-return-follows-link t)
 ;; インライン画像の横幅を強制リサイズする
@@ -168,8 +169,8 @@
 (setq org-speed-commands-user nil)
 (add-to-list 'org-speed-commands-user '("." call-interactively 'org-tree-to-indirect-buffer))
 ;; MobileOrg
-(setq org-mobile-directory "~/src/org_mobile")
-(setq org-mobile-inbox-for-pull "~/mem/8_mobileorg.org")
+(setq org-mobile-directory "~/usr/mem/org_mobile")
+(setq org-mobile-inbox-for-pull "~/usr/mem/8_mobileorg.org")
 
 ;;; gtags
 (autoload 'gtags-mode "gtags" "" t)
@@ -196,19 +197,19 @@
              ;;; インデント幅
              (setq c-basic-offset 4)
              (setq c-tab-always-indent t)
-                          (setq tab-width 4)
+             (setq tab-width 4)
              (setq indent-tabs-mode nil)
              ))
 
 ;;; zlc
-;(require 'zlc)
-;(zlc-mode t)
+(require 'zlc)
+(zlc-mode t)
 ;; 候補一覧を表示する際に、最初の項目を選択状態にする
-;(setq zlc-select-completion-immediately t)
+(setq zlc-select-completion-immediately t)
 
 ;;; sr-speedbar
-(require 'sr-speedbar)
-(setq sr-speedbar-right-side nil)
+;(require 'sr-speedbar)
+;(setq sr-speedbar-right-side nil)
 
 ;;; imenu-tree
 (add-hook 'org-mode-hook
