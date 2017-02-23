@@ -1,10 +1,10 @@
 ;;; -*- Mode: Lisp; Package: OUTLINE-TREE2 -*-
 ;;; cr-VB-like.l --- outline-tree
 
-;; Copyright (C) 2006 OHKUBO Hiroshi <ohkubo@s53.xrea.com>
+;; Copyright (C) 2006-2009 OHKUBO Hiroshi <ohkubo@s53.xrea.com>
 
 ;; Author: OHKUBO Hiroshi <ohkubo@s53.xrea.com>
-;; Time-stamp: <2006/01/13 22:06:56 +0900>
+;; Time-stamp: <2009/04/03 14:26:21 +0900>
 
 ;;; Code:
 
@@ -154,7 +154,7 @@
      root-node "[Function]"
      "^[ \t]*Function[ \t]+\\(.+?\\)[ \t]*$" "^[ \t]*End Function[ \t]*$")))
 (outline-tree-add-create-outline-function
- 'outline-tree-create-outline-VB-like "VB like" '(:language)
+ 'outline-tree-create-outline-VB-like "VB like" '(:type-program)
  "VB ライクな言語の各種定義を列挙します。")
 
 ;;; cr-VB-like.l ends here

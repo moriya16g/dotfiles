@@ -1,10 +1,10 @@
 ;;; -*- Mode: Lisp; Package: OUTLINE-TREE2 -*-
 ;;; public-utils.l
 
-;; Copyright (C) 2001-2005 OHKUBO Hiroshi <ohkubo@s53.xrea.com>
+;; Copyright (C) 2001-2009 OHKUBO Hiroshi <ohkubo@s53.xrea.com>
 
 ;; Author: OHKUBO Hiroshi <ohkubo@s53.xrea.com>
-;; Time-stamp: <2005/11/18 16:14:09 +0900>
+;; Time-stamp: <2009/04/03 14:28:43 +0900>
 
 ;;; Code:
 
@@ -34,7 +34,8 @@
 ;; tag
 (defun outline-tree-goto-next-tag ()
   (interactive)
-  (unless (and (syntax-open-tag-p #\<) (syntax-close-tag-p #\>))
+  (unless (and html-highlight-mode
+               (syntax-open-tag-p #\<) (syntax-close-tag-p #\>))
     (return-from outline-tree-goto-next-tag nil))
   (let (point)
     (save-excursion
@@ -52,14 +53,15 @@
       (goto-char (car matched-tag-range)))))
 
 (defun outline-tree-get-current-tag (&optional point)
-  (unless (and (syntax-open-tag-p #\<) (syntax-close-tag-p #\>))
+  (unless (and html-highlight-mode
+               (syntax-open-tag-p #\<) (syntax-close-tag-p #\>))
     (return-from outline-tree-get-current-tag nil))
   (let (from to tag-range tag-type tagname)
     (save-excursion
       (when point
         (goto-char point))
       (cond
-       ((eq (parse-point-syntax) :tag)
+       ((member (parse-point-syntax) '(:tag :string :comment))
         (skip-syntax-spec-backward "^{")
         (backward-char))
        ((and (eq (parse-point-syntax) nil)
@@ -68,25 +70,29 @@
         (return-from outline-tree-get-current-tag nil)))
       (setq from (point))
       (if (char/= #\/ (char-after (1+ from)))
-          (setq tag-type :open)
-        (setq tag-type :close))
+          (setq tag-type :start-tag)
+        (setq tag-type :end-tag))
       (skip-syntax-spec-forward "^}")
       (unless (char= (char-after (point)) #\>)
         (return-from outline-tree-get-current-tag nil))
+      (when (and (eq tag-type :start-tag)
+                 (char= (char-before (point)) #\/))
+        (setq tag-type :empty-element-tag))
       (setq to (1+ (point)))
       (setq tag-range (cons from to))
       (goto-char from)
-      (if (eq tag-type :open)
+      (if (member tag-type '(:start-tag :empty-element-tag))
           (looking-at "<[ \t\n]*\\([^ \t\n>]+\\)")
         (looking-at "</[ \t\n]*\\([^ \t\n>]+\\)"))
       (setq tagname (match-string 1))
       (values tag-range tag-type tagname))))
 
 (defun outline-tree-get-matched-tag (&optional point)
-  (unless (and (syntax-open-tag-p #\<) (syntax-close-tag-p #\>))
+  (unless (and html-highlight-mode
+               (syntax-open-tag-p #\<) (syntax-close-tag-p #\>))
     (return-from outline-tree-get-matched-tag nil))
-  (let (from to open-tag-range close-tag-range current-tag-type
-        tagname nest regexp)
+  (let (from to start-tag-range end-tag-range empty-element-tag-range
+        current-tag-type tagname nest regexp)
     (save-excursion
       (when point
         (goto-char point))
@@ -100,47 +106,68 @@
         (return-from outline-tree-get-matched-tag nil)))
       (setq from (point))
       (if (char/= #\/ (char-after (1+ from)))
-          (setq current-tag-type :open)
-        (setq current-tag-type :close))
+          (setq current-tag-type :start-tag)
+        (setq current-tag-type :end-tag))
       (skip-syntax-spec-forward "^}")
       (unless (char= (char-after (point)) #\>)
         (return-from outline-tree-get-matched-tag nil))
+      (when (and (eq current-tag-type :start-tag)
+                 (char= (char-before (point)) #\/))
+        (setq current-tag-type :empty-element-tag))
       (setq to (1+ (point)))
-      (if (eq current-tag-type :open)
-          (setq open-tag-range (cons from to))
-        (setq close-tag-range (cons from to)))
+      (cond
+       ((eq current-tag-type :start-tag)
+        (setq start-tag-range (cons from to)))
+       ((eq current-tag-type :end-tag)
+        (setq end-tag-range (cons from to)))
+       ((eq current-tag-type :empty-element-tag)
+        (setq empty-element-tag-range (cons from to))))
       (goto-char from)
-      (if (eq current-tag-type :open)
+      (if (member current-tag-type '(:start-tag :empty-element-tag))
           (looking-at "<[ \t\n]*\\([^ \t\n>]+\\)")
         (looking-at "</[ \t\n]*\\([^ \t\n>]+\\)"))
       (setq tagname (match-string 1))
       (setq nest 1)
-      (if (eq current-tag-type :open)
-          (progn
-            (goto-char to)
-            (setq regexp (compile-regexp (concat "<\\(/\\)?" (regexp-quote tagname) "[ \t\n>]") t))
-            (while (scan-buffer regexp :tail t)
-              (when (eq (parse-point-syntax (match-beginning 0)) nil)
-                (if (match-string 1)
-                    (decf nest)
-                  (incf nest))
-                (when (= nest 0)
-                  (setq close-tag-range (cons (match-beginning 0) (match-end 0)))
-                  (return)))))
-        (progn
-          (goto-char from)
-          (setq regexp (compile-regexp (concat "<\\(/\\)?" (regexp-quote tagname) "[ \t\n>]") t))
-          (while (scan-buffer regexp :reverse t :no-dup t)
-            (when (eq (parse-point-syntax (match-beginning 0)) nil)
-              (if (match-string 1)
-                  (incf nest)
-                (decf nest))
-              (when (= nest 0)
-                (setq open-tag-range (cons (match-beginning 0) (match-end 0)))
-                (return))))))
-      (when (and open-tag-range close-tag-range)
-        (if (eq current-tag-type :open)
-            (values close-tag-range open-tag-range current-tag-type tagname)
-          (values open-tag-range close-tag-range current-tag-type tagname))))))
+      (cond
+       ((eq current-tag-type :start-tag)
+        (goto-char to)
+        (setq regexp (compile-regexp (concat "<\\(/\\)?" (regexp-quote tagname) "[ \t\n>]") t))
+        (while (scan-buffer regexp :tail t)
+          (when (eq (parse-point-syntax (match-beginning 0)) nil)
+            (if (match-string 1)
+                (decf nest)
+              (progn
+                (backward-char)
+                (skip-syntax-spec-forward "^}")
+                (unless (and (char= (char-after (point)) #\>)
+                             (char= (char-before (point)) #\/))
+                  (incf nest))))
+            (when (= nest 0)
+              (setq end-tag-range (cons (match-beginning 0) (match-end 0)))
+              (return)))))
+       ((eq current-tag-type :end-tag)
+        (goto-char from)
+        (setq regexp (compile-regexp (concat "<\\(/\\)?" (regexp-quote tagname) "[ \t\n>]") t))
+        (while (scan-buffer regexp :reverse t :no-dup t)
+          (when (eq (parse-point-syntax (match-beginning 0)) nil)
+            (if (match-string 1)
+                (incf nest)
+              (save-excursion
+                (skip-syntax-spec-forward "^}")
+                (unless (and (char= (char-after (point)) #\>)
+                             (char= (char-before (point)) #\/))
+                  (decf nest))))
+            (when (= nest 0)
+              (setq start-tag-range (cons (match-beginning 0) (match-end 0)))
+              (return))))))
+      (when (or (eq current-tag-type :empty-element-tag)
+                (and start-tag-range end-tag-range))
+        (cond
+         ((eq current-tag-type :start-tag)
+          (values end-tag-range start-tag-range current-tag-type tagname))
+         ((eq current-tag-type :end-tag)
+          (values start-tag-range end-tag-range current-tag-type tagname))
+         ((eq current-tag-type :empty-element-tag)
+          (values nil empty-element-tag-range current-tag-type tagname)))))))
 
 ;; public-utils.l ends here

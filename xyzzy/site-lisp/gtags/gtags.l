@@ -525,8 +525,7 @@
 
     (set-buffer buffer)
     (message "Searching ~s ..." tagname)
-;    (setq command (concat "global -ax" flag " " tagname))
-	(setq command (concat "global -x" flag " " tagname))
+    (setq command (concat "global -ax" flag " " tagname))
 
     (if (not (eq 0 (execute-shell-command command nil (selected-buffer))))
         (progn (message (buffer-substring (point-min) (1- (point-max))))

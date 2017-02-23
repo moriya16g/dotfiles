@@ -1,10 +1,10 @@
 ;;; -*- Mode: asp; Package: OUTLINE-TREE2 -*-
 ;;; cr-ASP.l --- outline-tree
 
-;; Copyright (C) 2006 OHKUBO Hiroshi <ohkubo@s53.xrea.com>
+;; Copyright (C) 2006-2009 OHKUBO Hiroshi <ohkubo@s53.xrea.com>
 
 ;; Author: OHKUBO Hiroshi <ohkubo@s53.xrea.com>
-;; Time-stamp: <2006/01/15 11:49:02 +0900>
+;; Time-stamp: <2009/04/03 14:25:00 +0900>
 
 ;;; Code:
 
@@ -39,7 +39,7 @@
     (unless (outline-tree-node-has-children-p function-section-node)
       (outline-tree-remove-section-node function-section-node))))
 (outline-tree-add-create-outline-function
- 'outline-tree-create-outline-ASP-VBScript "ASP (VBScript)" '(:language)
+ 'outline-tree-create-outline-ASP-VBScript "ASP (VBScript)" '(:type-program)
  "ASP (VBScript) ‚ÌŠeí’è‹`‚ğ—ñ‹“‚µ‚Ü‚·B")
 
 (defun outline-tree-create-outline-ASP-get-range-script ()

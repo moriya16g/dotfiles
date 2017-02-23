@@ -1,10 +1,10 @@
 ;;; -*- Mode: Lisp; Package: OUTLINE-TREE2 -*-
 ;;; cr-rd.l --- outline-tree
 
-;; Copyright (C) 2001-2005 OHKUBO Hiroshi <ohkubo@s53.xrea.com>
+;; Copyright (C) 2001-2009 OHKUBO Hiroshi <ohkubo@s53.xrea.com>
 
 ;; Author: OHKUBO Hiroshi <ohkubo@s53.xrea.com>
-;; Time-stamp: <2005/11/12 14:23:03 +0900>
+;; Time-stamp: <2009/09/29 13:22:40 +0900>
 
 ;;; Code:
 
@@ -26,7 +26,7 @@
    #'(lambda (root-node range-name)
        (outline-tree-create-outline-regexp-internal
         :root-node root-node
-        :layer-regexp-list-order :non-miss
+        :layer-regexp-list-order :any-miss
         :layer-regexp-list-case-fold nil
         :layer-regexp-list
         '("^=\\{1\\} \\(.*\\)"
@@ -40,7 +40,7 @@
         :title-converter #'outline-tree-create-outline-rd-text-converter
         :create-sub-outline-func #'outline-tree-create-outline-rd-listing))))
 (outline-tree-add-create-outline-function
- 'outline-tree-create-outline-rd "RD" '(:format :line-oriented)
+ 'outline-tree-create-outline-rd "RD" '(:type-document :line-oriented)
  "RD フォーマットをアウトライン表示します。")
 
 ;;

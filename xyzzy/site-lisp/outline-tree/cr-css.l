@@ -1,10 +1,10 @@
 ;;; -*- Mode: Lisp; Package: OUTLINE-TREE2 -*-
 ;;; cr-css.l --- outline-tree
 
-;; Copyright (C) 2001-2006 OHKUBO Hiroshi <ohkubo@s53.xrea.com>
+;; Copyright (C) 2001-2009 OHKUBO Hiroshi <ohkubo@s53.xrea.com>
 
 ;; Author: OHKUBO Hiroshi <ohkubo@s53.xrea.com>
-;; Time-stamp: <2006/10/21 17:15:46 +0900>
+;; Time-stamp: <2009/04/03 14:25:05 +0900>
 
 ;;; Code:
 
@@ -26,7 +26,7 @@
         :root-node root-node
         :get-range-func #'outline-tree-create-outline-css-get-range-attribute))))
 (outline-tree-add-create-outline-function
- 'outline-tree-create-outline-css "CSS" '(:language)
+ 'outline-tree-create-outline-css "CSS" '(:type-document)
  "Cascading Style Sheets ファイルを selector, property 毎に表示します。")
 
 ;;

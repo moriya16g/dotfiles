@@ -1,10 +1,10 @@
 ;;; -*- Mode: Lisp; Package: OUTLINE-TREE2 -*-
 ;;; cr-blank-line.l --- outline-tree
 
-;; Copyright (C) 2001-2006 OHKUBO Hiroshi <ohkubo@s53.xrea.com>
+;; Copyright (C) 2001-2009 OHKUBO Hiroshi <ohkubo@s53.xrea.com>
 
 ;; Author: OHKUBO Hiroshi <ohkubo@s53.xrea.com>
-;; Time-stamp: <2006/10/21 17:15:25 +0900>
+;; Time-stamp: <2009/04/03 14:25:54 +0900>
 
 ;;; Code:
 
@@ -34,7 +34,7 @@
         (return))
       (setq from to))))
 (outline-tree-add-create-outline-function
- 'outline-tree-create-outline-blank-line "空行区切り" '(:generic :blank-line-oriented :sequential)
+ 'outline-tree-create-outline-blank-line "空行区切り" '(:type-general :blank-line-oriented :sequential)
  "空行で区切られたテキストを 1 ノードとして処理します。
 アウトライン上には先頭行を表示します。")
 

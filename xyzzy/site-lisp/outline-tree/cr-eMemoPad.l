@@ -1,10 +1,10 @@
 ;;; -*- Mode: Lisp; Package: OUTLINE-TREE2 -*-
 ;;; cr-eMemoPad.l --- outline-tree
 
-;; Copyright (C) 2001-2005 OHKUBO Hiroshi <ohkubo@s53.xrea.com>
+;; Copyright (C) 2001-2009 OHKUBO Hiroshi <ohkubo@s53.xrea.com>
 
 ;; Author: OHKUBO Hiroshi <ohkubo@s53.xrea.com>
-;; Time-stamp: <2005/11/12 14:34:26 +0900>
+;; Time-stamp: <2009/04/03 14:25:14 +0900>
 
 ;;; Commentary:
 
@@ -70,7 +70,7 @@
                   node-hierarchy)
             (setq layer-level current-layer-level)))))))
 (outline-tree-add-create-outline-function
- 'outline-tree-create-outline-eMemoPad "eMemoPad" '(:format :line-oriented)
+ 'outline-tree-create-outline-eMemoPad "eMemoPad" '(:type-document :line-oriented)
  "eMemoPad 用ファイル (.edf) を階層表示します。")
 
 ;;; cr-eMemoPad.l ends here

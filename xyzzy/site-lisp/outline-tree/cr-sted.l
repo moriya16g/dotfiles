@@ -1,10 +1,10 @@
 ;;; -*- Mode: Lisp; Package: OUTLINE-TREE2 -*-
 ;;; cr-sted.l --- outline-tree
 
-;; Copyright (C) 2001-2005 OHKUBO Hiroshi <ohkubo@s53.xrea.com>
+;; Copyright (C) 2001-2009 OHKUBO Hiroshi <ohkubo@s53.xrea.com>
 
 ;; Author: OHKUBO Hiroshi <ohkubo@s53.xrea.com>
-;; Time-stamp: <2005/11/12 14:16:53 +0900>
+;; Time-stamp: <2009/04/03 14:26:09 +0900>
 
 ;;; Commentary:
 
@@ -79,7 +79,7 @@
         (next-line)
         (setq from (point))))))
 (outline-tree-add-create-outline-function
- 'outline-tree-create-outline-sted "構造化テキスト(STED)" '(:format :line-oriented)
+ 'outline-tree-create-outline-sted "構造化テキスト(STED)" '(:type-document :line-oriented)
  "構造化テキストフォーマットをアウトライン表示します。
 
 この解析において、構造化テキスト仕様で規定されている「ブックマーク」

@@ -1,10 +1,10 @@
 ;;; -*- Mode: Lisp; Package: USER -*-
 ;;; makefile.l --- outline-tree
 
-;; Copyright (C) 2001-2006 OHKUBO Hiroshi <ohkubo@s53.xrea.com>
+;; Copyright (C) 2001-2012 OHKUBO Hiroshi <ohkubo@s53.xrea.com>
 
 ;; Author: OHKUBO Hiroshi <ohkubo@s53.xrea.com>
-;; Time-stamp: <2006/03/30 23:46:41 +0900>
+;; Time-stamp: <2012/03/30 21:36:11 +0900>
 
 ;;; Code:
 
@@ -36,19 +36,25 @@
                                    "cr-ini.l"
                                    "cr-texinfo.l"
                                    "cr-rd.l"
+                                   "cr-Markdown.l"
+                                   "cr-org-mode.l"
                                    "cr-LaTeX.l"
                                    "cr-lisp.l"
                                    "cr-perl.l"
                                    "cr-VB-like.l"
                                    "cr-ASP.l"
                                    "cr-XTAGS.l"
+                                   "cr-ctags.l"
+                                   "cr-global.l"
                                    "cr-list-function.l"
                                    "cr-grep.l"
                                    "cr-2ch.l"
                                    "cr-indent.l"
                                    "cr-sted.l"
                                    "cr-eMemoPad.l"
+                                   "cr-FreeMind.l"
                                    "cr-RFC.l"
+                                   "cr-xsv.l"
                                    "cr-blank-line.l"
                                    "cr-xdoc2txt-pdf.l"
                                    "cr-xdoc2txt-excel.l"
@@ -56,10 +62,10 @@
                                    "gen-cr-user-topic.l"
                                    "gen-cr-user-regexp.l"
                                    "output.l"
-                                   "op-heading-html.l"
-                                   "op-heading-html-frame.l"
-                                   "op-range-html.l"
-                                   "op-range-html-frame.l"
+                                   "output-html.l"
+                                   "output-html-range.l"
+                                   "output-html-heading.l"
+                                   "output-dialog.l"
                                    "toolbar.l"
                                    "app-menu.l"
                                    ))

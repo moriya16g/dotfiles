@@ -1,10 +1,10 @@
 ;;; -*- Mode: Lisp; Package: OUTLINE-TREE2 -*-
 ;;; cr-ini.l --- outline-tree
 
-;; Copyright (C) 2001-2004 OHKUBO Hiroshi <ohkubo@s53.xrea.com>
+;; Copyright (C) 2001-2009 OHKUBO Hiroshi <ohkubo@s53.xrea.com>
 
 ;; Author: OHKUBO Hiroshi <ohkubo@s53.xrea.com>
-;; Time-stamp: <2005/11/12 14:26:24 +0900>
+;; Time-stamp: <2009/04/03 14:25:33 +0900>
 
 ;;; Code:
 
@@ -20,20 +20,20 @@
 (defun outline-tree-create-outline-ini-section (root-node)
   (outline-tree-create-outline-regexp-internal
    :root-node root-node
-   :layer-regexp-list '("^\\(\\[.+\\]\\)$")
+   :layer-regexp-list '("^\\(\\[.+\\]\\)")
    :layer-regexp-list-case-fold nil
    :layer-regexp-list-order :non-miss
    :sub-type :heading-node
    :line-oriented t))
 (outline-tree-add-create-outline-function
- 'outline-tree-create-outline-ini-section "INI (セクションのみ)" '(:format :line-oriented :sequential)
+ 'outline-tree-create-outline-ini-section "INI (セクションのみ)" '(:type-data :line-oriented :sequential)
  "INI ファイルをセクション毎に表示します。")
 
 ;; INI ファイル 解析
 (defun outline-tree-create-outline-ini (root-node)
   (outline-tree-create-outline-regexp-internal
    :root-node root-node
-   :layer-regexp-list '("^\\(\\[.+\\]\\)$")
+   :layer-regexp-list '("^\\(\\[.+\\]\\)")
    :layer-regexp-list-case-fold nil
    :layer-regexp-list-order :non-miss
    :sub-type :heading-node
@@ -44,7 +44,7 @@
         :root-node root-node
         :get-range-func #'outline-tree-create-outline-ini-get-range-item))))
 (outline-tree-add-create-outline-function
- 'outline-tree-create-outline-ini "INI" '(:format :line-oriented :sequential)
+ 'outline-tree-create-outline-ini "INI" '(:type-data :line-oriented :sequential)
  "INI ファイルをセクション、項目毎に表示します。")
 
 ;;

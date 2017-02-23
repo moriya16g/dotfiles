@@ -1,10 +1,10 @@
 ;;; -*- Mode: Lisp; Package: OUTLINE-TREE2 -*-
 ;;; app-menu.l --- outline-tree
 
-;; Copyright (C) 2001-2006 OHKUBO Hiroshi <ohkubo@s53.xrea.com>
+;; Copyright (C) 2001-2007 OHKUBO Hiroshi <ohkubo@s53.xrea.com>
 
 ;; Author: OHKUBO Hiroshi <ohkubo@s53.xrea.com>
-;; Time-stamp: <2006/10/21 17:15:12 +0900>
+;; Time-stamp: <2007/02/10 22:29:38 +0900>
 
 ;;; Code:
 
@@ -201,174 +201,25 @@
       ;; 出力
       (add-popup-menu menu
                       (define-popup-menu
-                        (:popup 'tree-text "ツリー構造(&T)"
-                         (:item 'outline-tree-insert-tree-text-root
-                          "ツリー構造全てをテキスト出力(&A)"
-                          #'(lambda () (interactive)
-                              (treeview::with-app (*outline-tree-app-id*)
-                                (treeview::treeview-insert-tree-text 0);node
-                                (treeview::treeview-focus-editor)))
-                          #'(lambda () (or (outline-tree-exist-p) :disable)))
-                         (:item 'outline-tree-insert-tree-text-node
-                          "このノード以下のツリー構造をテキスト出力(&B)"
-                          #'(lambda () (interactive)
-                              (treeview::with-app (*outline-tree-app-id*)
-                                (treeview::treeview-insert-tree-text
-                                 (outline-tree-get-selected-node))
-                                (treeview::treeview-focus-editor)))
-                          #'(lambda () (or (outline-tree-exist-p) :disable))))
-                        :sep
-                        (:popup 'heading-node "見出しノード(&H)"
-                         (:popup 'buffer "バッファ全体(&B)"
-                          (:item 'outline-tree-output-heading-html-buffer
-                           "バッファ全体を 1ファイル HTML 出力(&A)"
-                           #'(lambda () (interactive)
-                               (outline-tree-output-heading-html
-                                (outline-tree-get-buffer-node-by-node)))
-                           #'(lambda () (or (and (outline-tree-exist-p)
-                                                 (outline-tree-latest-outline-p-by-node)) :disable)))
-                          (:item 'outline-tree-output-heading-html-frame-buffer
-                           "バッファ全体を FRAME HTML 出力(&B)"
-                           #'(lambda () (interactive)
-                               (outline-tree-output-heading-html-frame
-                                (outline-tree-get-buffer-node-by-node)))
-                           #'(lambda () (or (and (outline-tree-exist-p)
-                                                 (outline-tree-latest-outline-p-by-node)) :disable)))
-                          :sep
-                          (:item 'outline-tree-output-heading-html-buffer-expand
-                           "バッファ全体の表示ノードを 1ファイル HTML 出力(&C)"
-                           #'(lambda () (interactive)
-                               (outline-tree-output-heading-html
-                                (outline-tree-get-buffer-node-by-node) :expand))
-                           #'(lambda () (or (and (outline-tree-exist-p)
-                                                 (outline-tree-latest-outline-p-by-node)) :disable)))
-                          (:item 'outline-tree-output-heading-html-frame-buffer-expand
-                           "バッファ全体の表示ノードを FRAME HTML 出力(&D)"
-                           #'(lambda () (interactive)
-                               (outline-tree-output-heading-html-frame
-                                (outline-tree-get-buffer-node-by-node) :expand))
-                           #'(lambda () (or (and (outline-tree-exist-p)
-                                                 (outline-tree-latest-outline-p-by-node)) :disable)))
-                          )
-                         (:popup 'node "ここから(&H)"
-                          (:item 'outline-tree-output-heading-html-node
-                           "ここから 1ファイル HTML 出力(&A)"
-                           #'(lambda () (interactive) (outline-tree-output-heading-html
-                                                       (outline-tree-get-selected-node)))
-                           #'(lambda ()
-                               (when (or (not (outline-tree-exist-p))
-                                         (let ((node (outline-tree-get-selected-node)))
-                                           (or (outline-tree-buffer-node-p node)
-                                               (not (outline-tree-latest-outline-p-by-node node)))))
-                                 :disable)))
-                          (:item 'outline-tree-output-heading-html-frame-node
-                           "ここから FRAME HTML 出力(&B)"
-                           #'(lambda () (interactive) (outline-tree-output-heading-html-frame
-                                                       (outline-tree-get-selected-node)))
-                           #'(lambda ()
-                               (when (or (not (outline-tree-exist-p))
-                                         (let ((node (outline-tree-get-selected-node)))
-                                           (or (outline-tree-buffer-node-p node)
-                                               (not (outline-tree-latest-outline-p-by-node node)))))
-                                 :disable)))
-                          :sep
-                          (:item 'outline-tree-output-heading-html-node-expand
-                           "ここから表示ノードを 1ファイル HTML 出力(&C)"
-                           #'(lambda () (interactive) (outline-tree-output-heading-html
-                                                       (outline-tree-get-selected-node) :expand))
-                           #'(lambda ()
-                                 (when (or (not (outline-tree-exist-p))
-                                           (let ((node (outline-tree-get-selected-node)))
-                                             (or (outline-tree-buffer-node-p node)
-                                                 (not (outline-tree-latest-outline-p-by-node node)))))
-                                   :disable)))
-                          (:item 'outline-tree-output-heading-html-frame-node-expand
-                           "ここから表示ノードを FRAME HTML 出力(&D)"
-                           #'(lambda () (interactive) (outline-tree-output-heading-html-frame
-                                                       (outline-tree-get-selected-node) :expand))
-                           #'(lambda ()
-                                 (when (or (not (outline-tree-exist-p))
-                                           (let ((node (outline-tree-get-selected-node)))
-                                             (or (outline-tree-buffer-node-p node)
-                                                 (not (outline-tree-latest-outline-p-by-node node)))))
-                                   :disable)))
-                          ))
-                        (:popup 'range-node "範囲ノード(&R)"
-                         (:popup 'buffer "バッファ全体(&B)"
-                          (:item 'outline-tree-output-range-html-buffer
-                           "バッファ全体を 1ファイル HTML 出力(&A)"
-                           #'(lambda () (interactive)
-                               (outline-tree-output-range-html
-                                (outline-tree-get-buffer-node-by-node)))
-                           #'(lambda () (or (and (outline-tree-exist-p)
-                                                 (outline-tree-latest-outline-p-by-node)) :disable)))
-                          (:item 'outline-tree-output-range-html-frame-buffer
-                           "バッファ全体を FRAME HTML 出力(&B)"
-                           #'(lambda () (interactive)
-                               (outline-tree-output-range-html-frame
-                                (outline-tree-get-buffer-node-by-node)))
-                           #'(lambda () (or (and (outline-tree-exist-p)
-                                                 (outline-tree-latest-outline-p-by-node)) :disable)))
-                          :sep
-                          (:item 'outline-tree-output-range-html-buffer-expand
-                           "バッファ全体の表示ノードを 1ファイル HTML 出力(&C)"
-                           #'(lambda () (interactive)
-                               (outline-tree-output-range-html
-                                (outline-tree-get-buffer-node-by-node) :expand))
-                           #'(lambda () (or (and (outline-tree-exist-p)
-                                                 (outline-tree-latest-outline-p-by-node)) :disable)))
-                          (:item 'outline-tree-output-range-html-frame-buffer-expand
-                           "バッファ全体の表示ノードを FRAME HTML 出力(&D)"
-                           #'(lambda () (interactive)
-                               (outline-tree-output-range-html-frame
-                                (outline-tree-get-buffer-node-by-node) :expand))
-                           #'(lambda () (or (and (outline-tree-exist-p)
-                                                 (outline-tree-latest-outline-p-by-node)) :disable)))
-                          )
-                         (:popup 'node "ここから(&H)"
-                          (:item 'outline-tree-output-range-html-node
-                           "ここから 1ファイル HTML 出力(&A)"
-                           #'(lambda () (interactive) (outline-tree-output-range-html
-                                                       (outline-tree-get-selected-node)))
-                           #'(lambda ()
-                               (when (or (not (outline-tree-exist-p))
-                                         (let ((node (outline-tree-get-selected-node)))
-                                           (or (outline-tree-buffer-node-p node)
-                                               (not (outline-tree-latest-outline-p-by-node node)))))
-                                 :disable)))
-                          (:item 'outline-tree-output-range-html-frame-node
-                           "ここから FRAME HTML 出力(&B)"
-                           #'(lambda () (interactive) (outline-tree-output-range-html-frame
-                                                       (outline-tree-get-selected-node)))
-                           #'(lambda ()
-                               (when (or (not (outline-tree-exist-p))
-                                         (let ((node (outline-tree-get-selected-node)))
-                                           (or (outline-tree-buffer-node-p node)
-                                               (not (outline-tree-latest-outline-p-by-node node)))))
-                                 :disable)))
-                          :sep
-                          (:item 'outline-tree-output-range-html-node-expand
-                           "ここから表示ノードを 1ファイル HTML 出力(&C)"
-                           #'(lambda () (interactive) (outline-tree-output-range-html
-                                                       (outline-tree-get-selected-node) :expand))
-                           #'(lambda ()
-                               (when (or (not (outline-tree-exist-p))
-                                         (let ((node (outline-tree-get-selected-node)))
-                                           (or (outline-tree-buffer-node-p node)
-                                               (not (outline-tree-latest-outline-p-by-node node)))))
-                                 :disable)))
-                          (:item 'outline-tree-output-range-html-frame-node-expand
-                           "ここから表示ノードを FRAME HTML 出力(&D)"
-                           #'(lambda () (interactive) (outline-tree-output-range-html-frame
-                                                       (outline-tree-get-selected-node) :expand))
-                           #'(lambda ()
-                               (when (or (not (outline-tree-exist-p))
-                                         (let ((node (outline-tree-get-selected-node)))
-                                           (or (outline-tree-buffer-node-p node)
-                                               (not (outline-tree-latest-outline-p-by-node node)))))
-                                 :disable)))
-                          )))
-                      "出力(&O)")
+                        (:item 'outline-tree-insert-tree-text-root
+                         "ツリー構造全てをテキスト出力(&A)"
+                         #'(lambda () (interactive)
+                             (treeview::with-app (*outline-tree-app-id*)
+                               (treeview::treeview-insert-tree-text 0);node
+                               (treeview::treeview-focus-editor)))
+                         #'(lambda () (or (outline-tree-exist-p) :disable)))
+                        (:item 'outline-tree-insert-tree-text-node
+                         "このノード以下のツリー構造をテキスト出力(&B)"
+                         #'(lambda () (interactive)
+                             (treeview::with-app (*outline-tree-app-id*)
+                               (treeview::treeview-insert-tree-text
+                                (outline-tree-get-selected-node))
+                               (treeview::treeview-focus-editor)))
+                         #'(lambda () (or (outline-tree-exist-p) :disable))))
+                      "ツリー構造出力(&L)")
+      (add-menu-item menu 'outline-tree-output-html-dialog
+                     "HTML出力(&H)..."
+                     'outline-tree-output-html-dialog)
       (add-menu-separator menu)
       (add-popup-menu menu
                       (outline-tree-define-target-window-popup-menu)

@@ -1,10 +1,10 @@
 ;;; -*- Mode: Lisp; Package: OUTLINE-TREE2 -*-
 ;;; cr-grep.l --- outline-tree
 
-;; Copyright (C) 2001-2006 OHKUBO Hiroshi <ohkubo@s53.xrea.com>
+;; Copyright (C) 2001-2009 OHKUBO Hiroshi <ohkubo@s53.xrea.com>
 
 ;; Author: OHKUBO Hiroshi <ohkubo@s53.xrea.com>
-;; Time-stamp: <2006/02/26 15:46:53 +0900>
+;; Time-stamp: <2009/04/03 14:26:57 +0900>
 
 ;;; Code:
 
@@ -14,6 +14,9 @@
 (require "outline-tree/cr-range-internal")
 
 (in-package "outline-tree2")
+
+(defun outline-tree-create-outline-grep-possible-p (buffer)
+  (buffer-local-value buffer 'ed::*find-error-scanner*))
 
 ;; grep 解析
 (defun outline-tree-create-outline-grep (root-node)
@@ -31,7 +34,7 @@
           :whole-range (cons (match-beginning 0)
                              (if (= (point) (buffer-size)) nil (point))))))))
 (outline-tree-add-create-outline-function
- 'outline-tree-create-outline-grep "Grep" '()
+ 'outline-tree-create-outline-grep "Grep結果" '()
  "Grep 結果をアウトライン表示します。")
 
 ;;

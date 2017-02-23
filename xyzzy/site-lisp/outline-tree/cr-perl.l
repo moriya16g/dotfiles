@@ -1,10 +1,10 @@
 ;;; -*- Mode: Lisp; Package: OUTLINE-TREE2 -*-
 ;;; cr-perl.l --- outline-tree
 
-;; Copyright (C) 2006 OHKUBO Hiroshi <ohkubo@s53.xrea.com>
+;; Copyright (C) 2006-2009 OHKUBO Hiroshi <ohkubo@s53.xrea.com>
 
 ;; Author: OHKUBO Hiroshi <ohkubo@s53.xrea.com>
-;; Time-stamp: <2006/01/13 21:20:13 +0900>
+;; Time-stamp: <2009/04/03 14:25:43 +0900>
 
 ;;; Code:
 
@@ -71,7 +71,7 @@
     (outline-tree-create-outline-perl-use root-node "[use]")
     (outline-tree-create-outline-perl-sub root-node "[sub]")))
 (outline-tree-add-create-outline-function
- 'outline-tree-create-outline-perl "Perl" '(:language)
+ 'outline-tree-create-outline-perl "Perl" '(:type-program)
  "Perl Œ¾Œê‚ÌŠeí’è‹`‚ğ—ñ‹“‚µ‚Ü‚·B")
 
 ;;; cr-perl.l ends here

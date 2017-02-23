@@ -1,10 +1,10 @@
 ;;; -*- Mode: Lisp; Package: OUTLINE-TREE2 -*-
 ;;; cr-topic.l --- outline-tree
 
-;; Copyright (C) 2001-2005 OHKUBO Hiroshi <ohkubo@s53.xrea.com>
+;; Copyright (C) 2001-2009 OHKUBO Hiroshi <ohkubo@s53.xrea.com>
 
 ;; Author: OHKUBO Hiroshi <ohkubo@s53.xrea.com>
-;; Time-stamp: <2006/08/24 17:07:51 +0900>
+;; Time-stamp: <2009/04/03 14:24:54 +0900>
 
 ;;; Code:
 
@@ -83,7 +83,7 @@
    :line-oriented t
    :title-converter nil))
 (outline-tree-add-create-outline-function
- 'outline-tree-create-outline-topic "見出し解析" '(:generic :line-oriented :sequential)
+ 'outline-tree-create-outline-topic "**見出し解析 (ダイアログ設定有)" '(:type-general :line-oriented :sequential)
  "各行の先頭空白の幅、及び、先頭空白を除いた行頭見出し文字の出現順序に
 よって見出しを解析し、アウトライン表示します。
 

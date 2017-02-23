@@ -1,10 +1,10 @@
 ;;; -*- Mode: Lisp; Package: OUTLINE-TREE2 -*-
 ;;; cr-hiki.l --- outline-tree
 
-;; Copyright (C) 2001-2006 OHKUBO Hiroshi <ohkubo@s53.xrea.com>
+;; Copyright (C) 2001-2009 OHKUBO Hiroshi <ohkubo@s53.xrea.com>
 
 ;; Author: OHKUBO Hiroshi <ohkubo@s53.xrea.com>
-;; Time-stamp: <2006/01/29 08:30:23 +0900>
+;; Time-stamp: <2009/04/03 14:25:24 +0900>
 
 ;;; Code:
 
@@ -35,7 +35,7 @@
                 (outline-tree-create-outline-hiki-listing-item-asterisk root-node)
               (outline-tree-create-outline-hiki-listing-item-sharp root-node)))))))
 (outline-tree-add-create-outline-function
- 'outline-tree-create-outline-hiki "Hiki" '(:format :line-oriented :sequential)
+ 'outline-tree-create-outline-hiki "Hiki" '(:type-document :line-oriented :sequential)
  "Hiki フォーマットをアウトライン表示します。")
 
 ;;

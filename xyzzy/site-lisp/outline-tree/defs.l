@@ -1,10 +1,10 @@
 ;;; -*- Mode: Lisp; Package: OUTLINE-TREE2 -*-
 ;;; defs.l --- outline-tree
 
-;; Copyright (C) 2001-2006 OHKUBO Hiroshi <ohkubo@s53.xrea.com>
+;; Copyright (C) 2001-2012 OHKUBO Hiroshi <ohkubo@s53.xrea.com>
 
 ;; Author: OHKUBO Hiroshi <ohkubo@s53.xrea.com>
-;; Time-stamp: <2006/10/25 02:27:34 +0900>
+;; Time-stamp: <2012/04/03 00:31:00 +0900>
 
 ;;; Code:
 
@@ -20,7 +20,7 @@
 ;;----------------------------------------------------------------------------
 ;; Šî–{
 ;;----------------------------------------------------------------------------
-(defconstant *outline-tree-version* "2006.10.25")
+(defconstant *outline-tree-version* "2012.04.03")
 (defvar *outline-tree-debug* nil)
 
 ;;----------------------------------------------------------------------------

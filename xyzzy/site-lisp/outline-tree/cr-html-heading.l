@@ -1,10 +1,10 @@
 ;;; -*- Mode: Lisp; Package: OUTLINE-TREE2 -*-
 ;;; cr-html-heading.l --- outline-tree
 
-;; Copyright (C) 2001-2006 OHKUBO Hiroshi <ohkubo@s53.xrea.com>
+;; Copyright (C) 2001-2009 OHKUBO Hiroshi <ohkubo@s53.xrea.com>
 
 ;; Author: OHKUBO Hiroshi <ohkubo@s53.xrea.com>
-;; Time-stamp: <2006/10/21 17:15:58 +0900>
+;; Time-stamp: <2009/05/22 12:44:36 +0900>
 
 ;;; Code:
 
@@ -40,7 +40,7 @@
         :title-converter #'outline-tree-create-outline-html-heading-title-converter
         :create-sub-outline-func #'outline-tree-create-outline-html-heading-listing))))
 (outline-tree-add-create-outline-function
- 'outline-tree-create-outline-html-heading "HTML (見出し)" '(:language)
+ 'outline-tree-create-outline-html-heading "HTML (見出し)" '(:type-document)
  "HTML ファイルを <H[1-6]>, <li> タグを元に見出し表示します。")
 
 ;;
@@ -53,7 +53,7 @@
         (loop
           (multiple-value-setq (matched-tag-range current-tag-range current-tag-type tagname)
             (outline-tree-get-matched-tag))
-          (when (and matched-tag-range (eq current-tag-type :open)
+          (when (and matched-tag-range (eq current-tag-type :start-tag)
                      (string-equal tagname "body"))
             (setq body-exist-p t)
             (return))
@@ -62,7 +62,7 @@
       (loop
         (multiple-value-setq (matched-tag-range current-tag-range current-tag-type tagname)
           (outline-tree-get-matched-tag))
-        (when (and matched-tag-range (eq current-tag-type :open)
+        (when (and matched-tag-range (eq current-tag-type :start-tag)
                    (string-equal tagname "body"))
           (setq begin-range current-tag-range
                 end-range matched-tag-range
@@ -90,7 +90,7 @@
       (loop
         (multiple-value-setq (matched-tag-range current-tag-range current-tag-type tagname)
           (outline-tree-get-matched-tag))
-        (when (and matched-tag-range (eq current-tag-type :open)
+        (when (and matched-tag-range (eq current-tag-type :start-tag)
                    (or (string-equal tagname "ul") (string-equal tagname "ol")
                        (string-equal tagname "dl")))
           (setq begin-range current-tag-range
@@ -109,7 +109,7 @@
       (unless tag-range
         (outline-tree-goto-next-tag)
         (multiple-value-setq (tag-range tag-type tagname) (outline-tree-get-current-tag)))
-      (unless (and tag-range (string-equal tagname "li") (eq tag-type :open))
+      (unless (and tag-range (string-equal tagname "li") (eq tag-type :start-tag))
         (return-from outline-tree-create-outline-html-heading-get-range-listing-item))
       (setq begin-range tag-range)
       (goto-char (outline-tree-get-range-to tag-range))
@@ -118,12 +118,12 @@
           (return))
         (multiple-value-setq (tag-range tag-type tagname) (outline-tree-get-current-tag))
         (cond ((string-equal tagname "li")
-               (if (eq tag-type :open)
+               (if (eq tag-type :start-tag)
                    (setq end-range (cons (outline-tree-get-range-from tag-range)
                                          (outline-tree-get-range-from tag-range)))
                  (setq end-range tag-range))
                (return))
-              ((eq tag-type :open)
+              ((eq tag-type :start-tag)
                (outline-tree-goto-matched-tag))))
       (unless end-range
         (setq end-range (cons (point-max) (point-max))))
@@ -134,7 +134,7 @@
         (when (looking-at "[ \t\n]+")
           (goto-char (match-end 0)))
         (setq name-from (point))
-        (unless (scan-buffer "\\(<\\(\/?li\\|ul\\|ol\\)\\)" :regexp t)
+        (unless (scan-buffer "\\(<\\(\/?li\\|ul\\|ol\\)\\)" :regexp t :case-fold t)
           (goto-char (point-max)))
         (while (member (char-before (point)) '(#\SPC #\TAB #\LFD))
           (backward-char))
@@ -152,7 +152,7 @@
       (unless tag-range
         (outline-tree-goto-next-tag)
         (multiple-value-setq (tag-range tag-type tagname) (outline-tree-get-current-tag)))
-      (unless (and tag-range (string-equal tagname "dt") (eq tag-type :open))
+      (unless (and tag-range (string-equal tagname "dt") (eq tag-type :start-tag))
         (return-from outline-tree-create-outline-html-heading-get-range-listing-definition))
       (setq begin-range tag-range)
       (goto-char (outline-tree-get-range-to tag-range))
@@ -160,11 +160,11 @@
         (unless (outline-tree-goto-next-tag)
           (return))
         (multiple-value-setq (tag-range tag-type tagname) (outline-tree-get-current-tag))
-        (cond ((and (string-equal tagname "dt") (eq tag-type :open))
+        (cond ((and (string-equal tagname "dt") (eq tag-type :start-tag))
                (setq end-range (cons (outline-tree-get-range-from tag-range)
                                      (outline-tree-get-range-from tag-range)))
                (return))
-              ((eq tag-type :open)
+              ((eq tag-type :start-tag)
                (outline-tree-goto-matched-tag))))
       (unless end-range
         (setq end-range (cons (point-max) (point-max))))
@@ -175,7 +175,7 @@
         (when (looking-at "[ \t\n]+")
           (goto-char (match-end 0)))
         (setq name-from (point))
-        (unless (scan-buffer "\\(<\\(\/?dt\\|dd\\|dl\\)\\)" :regexp t)
+        (unless (scan-buffer "\\(<\\(\/?dt\\|dd\\|dl\\)\\)" :regexp t :case-fold t)
           (goto-char (point-max)))
         (while (member (char-before (point)) '(#\SPC #\TAB #\LFD))
           (backward-char))

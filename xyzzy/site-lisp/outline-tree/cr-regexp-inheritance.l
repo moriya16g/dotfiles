@@ -1,10 +1,10 @@
 ;;; -*- Mode: Lisp; Package: OUTLINE-TREE2 -*-
 ;;; cr-regexp-inheritance.l --- outline-tree
 
-;; Copyright (C) 2001-2006 OHKUBO Hiroshi <ohkubo@s53.xrea.com>
+;; Copyright (C) 2001-2009 OHKUBO Hiroshi <ohkubo@s53.xrea.com>
 
 ;; Author: OHKUBO Hiroshi <ohkubo@s53.xrea.com>
-;; Time-stamp: <2006/08/25 12:07:17 +0900>
+;; Time-stamp: <2009/06/23 16:46:47 +0900>
 
 ;;; Code:
 
@@ -25,7 +25,7 @@
    :line-oriented t
    :title-converter #'(lambda (str) (if (string= "\n" str) "" str))))
 (outline-tree-add-create-outline-function
- 'outline-tree-create-outline-line "行頭区切り(全行)" '(:generic :line-oriented :sequential)
+ 'outline-tree-create-outline-line "行頭区切り(全行)" '(:type-general :line-oriented :sequential)
  "各行を全て表示します。
 各行の入替え処理に適しています。")
 
@@ -38,7 +38,7 @@
    :layer-regexp-list-order :non-miss
    :line-oriented t))
 (outline-tree-add-create-outline-function
- 'outline-tree-create-outline-no-space-line "行頭区切り(インデント無し行頭)" '(:generic :line-oriented :sequential)
+ 'outline-tree-create-outline-no-space-line "行頭区切り(インデント無し行頭)" '(:type-general :line-oriented :sequential)
  "行頭にインデントがない行で区切ります。")
 
 ;; バッチファイル 解析
@@ -50,7 +50,7 @@
    :layer-regexp-list-order :non-miss
    :line-oriented t))
 (outline-tree-add-create-outline-function
- 'outline-tree-create-outline-bat "BAT (ラベル)" '(:misc :line-oriented :sequential)
+ 'outline-tree-create-outline-bat "BAT (ラベル)" '(:type-program :line-oriented :sequential)
  "バッチファイル (*.bat) を行頭のラベル (:***) 毎に表示します。")
 
 ;; LISP コメント 解析
@@ -63,7 +63,7 @@
    :layer-regexp-list-case-fold nil
    :layer-regexp-list-order :top-miss))
 (outline-tree-add-create-outline-function
- 'outline-tree-create-outline-lisp-comment "LISP (コメント)" '(:language :line-oriented :sequential)
+ 'outline-tree-create-outline-lisp-comment "LISP (コメント)" '(:type-program :line-oriented :sequential)
  "LISP ファイルを行頭の \";;\" で始まるコメントと、各種定義 S 式で
 アウトライン表示します。")
 
@@ -80,7 +80,7 @@
    :layer-regexp-list-order :top-miss
    :sub-type :heading-node))
 (outline-tree-add-create-outline-function
- 'outline-tree-create-outline-info "info" '(:format :line-oriented :sequential)
+ 'outline-tree-create-outline-info "info" '(:type-document :line-oriented :sequential)
  "info フォーマットをアウトライン表示します。")
 
 ;; ChangeLog フォーマット
@@ -88,14 +88,14 @@
   (outline-tree-create-outline-regexp-internal
    :root-node root-node
    :layer-regexp-list
-   '("^\\([^ \t\n].+\\)"
+   '("^\\([0-9]\\{4\\}-[0-9]\\{2\\}-[0-9]\\{2\\} .+<.*>\\)"
      "^\t\\* \\(.+\\)")
    :layer-regexp-list-case-fold nil
    :layer-regexp-list-order :non-miss
    :sub-type :heading-node
    :line-oriented t))
 (outline-tree-add-create-outline-function
- 'outline-tree-create-outline-changelog "ChangeLog" '(:format :line-oriented :sequential)
+ 'outline-tree-create-outline-changelog "ChangeLog" '(:type-document :line-oriented :sequential)
  "ChangeLog フォーマットをアウトライン表示します。")
 
 ;; roff フォーマット
@@ -111,7 +111,7 @@
    :line-oriented t
    :sub-type :heading-node))
 (outline-tree-add-create-outline-function
- 'outline-tree-create-outline-roff "roff" '(:format :line-oriented :sequential)
+ 'outline-tree-create-outline-roff "roff" '(:type-document :line-oriented :sequential)
  "roff フォーマットをアウトライン表示します。")
 
 ;; Java 解析
@@ -119,12 +119,14 @@
   (outline-tree-create-outline-regexp-internal
    :root-node root-node
    :layer-regexp-list
-   '("^[ \t]*\\(\\(?:package\\|import\\|[^{\n]*?class[ \t]+[a-zA-Z]+\\).*\\)[ \t]*[;{]"
+   '("^[ \t]*\\(\\(?:package\\|[^{\n]*?class[ \t]+[a-zA-Z]+\\)[^;{]*?\\)[;{]"
      "^[ \t]*\\([^{\n()]*?\\(?:public\\|private\\)[^{\n()]*?[a-zA-Z]+[ \t]*(.*)[^(){}]*\\)[ \t]*{")
+;   '("^[ \t]*\\(\\(?:package\\|import\\|[^{\n]*?class[ \t]+[a-zA-Z]+\\)[^;{]*?\\)[;{]"
+;     "^[ \t]*\\([^{\n()]*?\\(?:public\\|private\\)[^{\n()]*?[a-zA-Z]+[ \t]*(.*)[^(){}]*\\)[ \t]*{")
    :layer-regexp-list-case-fold nil
    :layer-regexp-list-order :non-miss))
 (outline-tree-add-create-outline-function
- 'outline-tree-create-outline-java "Java" '(:language :line-oriented :sequential)
+ 'outline-tree-create-outline-java "Java" '(:type-program :line-oriented :sequential)
  "Java 言語を非常に簡易的な方法でアウトライン表示します。
 実用に耐える実装には至っていません。")
 

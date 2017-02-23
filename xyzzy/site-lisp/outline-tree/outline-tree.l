@@ -1,13 +1,12 @@
 ;;; -*- Mode: Lisp; Package: OUTLINE-TREE2 -*-
 ;;; outline-tree.l
 
-;; Copyright (C) 2001-2006 OHKUBO Hiroshi <ohkubo@s53.xrea.com>
+;; Copyright (C) 2001-2012 OHKUBO Hiroshi <ohkubo@s53.xrea.com>
 
 ;; Author: OHKUBO Hiroshi <ohkubo@s53.xrea.com>
-;; Time-stamp: <2006/10/25 02:23:57 +0900>
+;; Time-stamp: <2012/03/30 21:35:44 +0900>
 
 ;;; Commentary:
-
 ;; Description:
 ;;
 ;;  TreeView.dll を用いて、バッファリストのツリー表示、バッファ内のア
@@ -468,139 +467,24 @@
       ;; 出力
       (add-popup-menu menu
                       (define-popup-menu
-                        (:popup 'tree-text "ツリー構造(&T)"
-                         (:item 'outline-tree-insert-tree-text-root
-                          "ツリー構造全てをテキスト出力(&A)"
-                          #'(lambda () (interactive)
-                              (treeview::with-app (*outline-tree-app-id*)
-                                (treeview::treeview-insert-tree-text 0);node
-                                (treeview::treeview-focus-editor))))
-                         (:item 'outline-tree-insert-tree-text-node
-                          "このノード以下のツリー構造をテキスト出力(&B)"
-                          #'(lambda () (interactive)
-                              (treeview::with-app (*outline-tree-app-id*)
-                                (treeview::treeview-insert-tree-text node)
-                                (treeview::treeview-focus-editor)))))
-                        :sep
-                        (:popup 'heading-node "見出しノード(&H)"
-                         (:popup 'buffer "バッファ全体(&B)"
-                          (:item 'outline-tree-output-heading-html-buffer
-                           "バッファ全体を 1ファイル HTML 出力(&A)"
-                           #'(lambda () (interactive)
-                               (outline-tree-output-heading-html
-                                (outline-tree-get-buffer-node-by-node node)))
-                           #'(lambda () (or (outline-tree-latest-outline-p-by-node node) :disable)))
-                          (:item 'outline-tree-output-heading-html-frame-buffer
-                           "バッファ全体を FRAME HTML 出力(&B)"
-                           #'(lambda () (interactive)
-                               (outline-tree-output-heading-html-frame
-                                (outline-tree-get-buffer-node-by-node node)))
-                           #'(lambda () (or (outline-tree-latest-outline-p-by-node node) :disable)))
-                          :sep
-                          (:item 'outline-tree-output-heading-html-buffer-expand
-                           "バッファ全体の表示ノードを 1ファイル HTML 出力(&C)"
-                           #'(lambda () (interactive)
-                               (outline-tree-output-heading-html
-                                (outline-tree-get-buffer-node-by-node node) :expand))
-                           #'(lambda () (or (outline-tree-latest-outline-p-by-node node) :disable)))
-                          (:item 'outline-tree-output-heading-html-frame-buffer-expand
-                         "バッファ全体の表示ノードを FRAME HTML 出力(&D)"
-                           #'(lambda () (interactive)
-                               (outline-tree-output-heading-html-frame
-                                (outline-tree-get-buffer-node-by-node node) :expand))
-                           #'(lambda () (or (outline-tree-latest-outline-p-by-node node) :disable)))
-                          )
-                         (:popup 'node "ここから(&H)"
-                          (:item 'outline-tree-output-heading-html-node
-                           "ここから 1ファイル HTML 出力(&A)"
-                           #'(lambda () (interactive) (outline-tree-output-heading-html node))
-                           #'(lambda ()
-                               (when (or (outline-tree-buffer-node-p node)
-                                         (not (outline-tree-latest-outline-p-by-node node)))
-                                 :disable)))
-                          (:item 'outline-tree-output-heading-html-frame-node
-                           "ここから FRAME HTML 出力(&B)"
-                           #'(lambda () (interactive) (outline-tree-output-heading-html-frame node))
-                           #'(lambda ()
-                               (when (or (outline-tree-buffer-node-p node)
-                                         (not (outline-tree-latest-outline-p-by-node node)))
-                                 :disable)))
-                          :sep
-                          (:item 'outline-tree-output-heading-html-node-expand
-                           "ここから表示ノードを 1ファイル HTML 出力(&C)"
-                           #'(lambda () (interactive) (outline-tree-output-heading-html node :expand))
-                           #'(lambda ()
-                               (when (or (outline-tree-buffer-node-p node)
-                                         (not (outline-tree-latest-outline-p-by-node node)))
-                                 :disable)))
-                          (:item 'outline-tree-output-heading-html-frame-node-expand
-                           "ここから表示ノードを FRAME HTML 出力(&D)"
-                           #'(lambda () (interactive) (outline-tree-output-heading-html-frame node :expand))
-                           #'(lambda ()
-                               (when (or (outline-tree-buffer-node-p node)
-                                         (not (outline-tree-latest-outline-p-by-node node)))
-                                 :disable)))
-                          ))
-                        (:popup 'range-node "範囲ノード(&R)"
-                         (:popup 'buffer "バッファ全体(&B)"
-                          (:item 'outline-tree-output-range-html-buffer
-                           "バッファ全体を 1ファイル HTML 出力(&A)"
-                           #'(lambda () (interactive)
-                               (outline-tree-output-range-html
-                                (outline-tree-get-buffer-node-by-node node)))
-                           #'(lambda () (or (outline-tree-latest-outline-p-by-node node) :disable)))
-                          (:item 'outline-tree-output-range-html-frame-buffer
-                           "バッファ全体を FRAME HTML 出力(&B)"
-                           #'(lambda () (interactive)
-                               (outline-tree-output-range-html-frame
-                                (outline-tree-get-buffer-node-by-node node)))
-                           #'(lambda () (or (outline-tree-latest-outline-p-by-node node) :disable)))
-                          :sep
-                          (:item 'outline-tree-output-range-html-buffer-expand
-                           "バッファ全体の表示ノードを 1ファイル HTML 出力(&C)"
-                           #'(lambda () (interactive)
-                               (outline-tree-output-range-html
-                                (outline-tree-get-buffer-node-by-node node) :expand))
-                           #'(lambda () (or (outline-tree-latest-outline-p-by-node node) :disable)))
-                          (:item 'outline-tree-output-range-html-frame-buffer-expand
-                           "バッファ全体の表示ノードを FRAME HTML 出力(&D)"
-                           #'(lambda () (interactive)
-                               (outline-tree-output-range-html-frame
-                                (outline-tree-get-buffer-node-by-node node) :expand))
-                           #'(lambda () (or (outline-tree-latest-outline-p-by-node node) :disable)))
-                          )
-                         (:popup 'node "ここから(&H)"
-                          (:item 'outline-tree-output-range-html-node
-                           "ここから 1ファイル HTML 出力(&A)"
-                           #'(lambda () (interactive) (outline-tree-output-range-html node))
-                           #'(lambda ()
-                               (when (or (outline-tree-buffer-node-p node)
-                                         (not (outline-tree-latest-outline-p-by-node node)))
-                                 :disable)))
-                          (:item 'outline-tree-output-range-html-frame-node
-                           "ここから FRAME HTML 出力(&B)"
-                           #'(lambda () (interactive) (outline-tree-output-range-html-frame node))
-                           #'(lambda ()
-                               (when (or (outline-tree-buffer-node-p node)
-                                         (not (outline-tree-latest-outline-p-by-node node)))
-                                 :disable)))
-                          :sep
-                          (:item 'outline-tree-output-range-html-node-expand
-                           "ここから表示ノードを 1ファイル HTML 出力(&C)"
-                           #'(lambda () (interactive) (outline-tree-output-range-html node :expand))
-                           #'(lambda ()
-                               (when (or (outline-tree-buffer-node-p node)
-                                         (not (outline-tree-latest-outline-p-by-node node)))
-                                 :disable)))
-                          (:item 'outline-tree-output-range-html-frame-node-expand
-                           "ここから表示ノードを FRAME HTML 出力(&D)"
-                           #'(lambda () (interactive) (outline-tree-output-range-html-frame node :expand))
-                           #'(lambda ()
-                               (when (or (outline-tree-buffer-node-p node)
-                                         (not (outline-tree-latest-outline-p-by-node node)))
-                                 :disable)))
-                          )))
-                      "出力(&O)")
+                        (:item 'outline-tree-insert-tree-text-root
+                         "ツリー構造全てをテキスト出力(&A)"
+                         #'(lambda () (interactive)
+                             (treeview::with-app (*outline-tree-app-id*)
+                               (treeview::treeview-insert-tree-text 0);node
+                               (treeview::treeview-focus-editor))))
+                        (:item 'outline-tree-insert-tree-text-node
+                         "このノード以下のツリー構造をテキスト出力(&B)"
+                         #'(lambda () (interactive)
+                             (treeview::with-app (*outline-tree-app-id*)
+                               (treeview::treeview-insert-tree-text node)
+                               (treeview::treeview-focus-editor)))))
+                      "ツリー構造出力(&L)")
+      (add-menu-item menu 'outline-tree-output-html-dialog
+                     "HTML出力(&H)..."
+                     #'(lambda ()
+                         (interactive)
+                         (outline-tree-output-html-dialog node)))
       (add-menu-separator menu))
 
     ;; tab-bar 用 menu の生成でない場合
@@ -1812,7 +1696,9 @@ outline-tree-create-outline-range-internal 関数内にて一時的に値が設定される。")
       ;; 登録
       (when (not (deleted-buffer-p buffer))
         (let* ((buffer-name (buffer-name buffer))
-               (namestring (get-buffer-file-name buffer))
+               (namestring (and (get-buffer-file-name buffer)
+                                (file-exist-p (directory-namestring (get-buffer-file-name buffer)))
+                                (get-buffer-file-name buffer)))
                (folder-name (namestring
                              (or (and namestring
                                       (truename (directory-namestring namestring)))
@@ -2290,7 +2176,11 @@ outline-tree-create 内で用いられる補助関数"
   "引数の型に応じ、各種方法で buffer を取得し返す"
   (case (type-of arg)
     (integer ; node
-     (outline-tree-get-buffer-by-node arg))))
+     (outline-tree-get-buffer-by-node arg))
+    (window
+     (window-buffer arg))
+    (buffer
+     arg)))
 (defun outline-tree-get-buffer-by-node (&optional node)
   "node が属する buffer を返す"
   (treeview::with-app (*outline-tree-app-id*)
@@ -2664,6 +2554,40 @@ buffer-node と TreeView 上の階層構造から判定する。"
   (interactive)
   (treeview::with-app (*outline-tree-app-id*)
     (treeview::treeview-select-act-item-delay)))
+
+;;----------------------------------------------------------------------------
+;; バッファが heading-node を所持しているかの取得
+;;----------------------------------------------------------------------------
+(defun outline-tree-has-heading-node-p (&optional arg)
+  (case (type-of arg)
+    (buffer
+     (outline-tree-has-heading-node-p-by-buffer arg))
+    (window
+     (outline-tree-has-heading-node-p-by-window arg))
+    (integer ; node
+     (outline-tree-has-heading-node-p-by-node arg)
+    (t
+     (outline-tree-has-heading-node-p-by-window)))))
+(defun outline-tree-has-heading-node-p-by-buffer (&optional buffer)
+  (unless buffer
+    (setq buffer (outline-tree-get-target-buffer)))
+  (treeview::with-app (*outline-tree-app-id*)
+    (unless (outline-tree-exist-outline-p buffer)
+      (return-from outline-tree-has-heading-node-p-by-buffer nil))
+    (let ((buffer-node (outline-tree-get-buffer-node-by-buffer buffer)) node)
+      (when buffer-node
+        (treeview::treeview-funcall-recursive-subtree-top-down
+         buffer-node
+         #'(lambda (node)
+             (when (outline-tree-heading-node-p node)
+               (return-from outline-tree-has-heading-node-p-by-buffer t))))
+        nil))))
+(defun outline-tree-has-heading-node-p-by-window (&optional window)
+  (outline-tree-funcall-buffer-by-window
+   #'outline-tree-has-heading-node-p-by-buffer window))
+(defun outline-tree-has-heading-node-p-by-node (&optional node)
+  (outline-tree-funcall-buffer-by-node
+   #'outline-tree-has-heading-node-p-by-buffer node))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; 各種機能
@@ -3642,16 +3566,18 @@ buffer-node と TreeView 上の階層構造から判定する。"
         (stable-sort
          (nconc *outline-tree-create-outline-function-alist*
                 (list (list func-symbol func-name func-type func-doc)))
-         #'string< :key #'second)))
+         #'string-lessp :key #'second)))
 (defvar *outline-tree-create-outline-function-menu* nil)
 (defun outline-tree-create-outline-function-menu-gen ()
-  (let ((outline-type-alist '((:all      . "全て(&A)")
-                              (nil       . nil)
-                              (:generic  . "一般解析(&G)")
-                              (:language . "言語(&L)")
-                              (:format   . "ファイルフォーマット(&F)")
-                              (:misc     . "その他(&M)")
-                              (:user     . "ユーザ(&U)")))
+  (let ((outline-type-alist '((:all                  . "全て(&A)")
+                              (nil                   . nil)
+                              (:type-program         . "プログラミング個別(&P)")
+                              (:type-program-general . "プログラミング汎用(&Q)")
+                              (:type-document        . "文書フォーマット(&W)")
+                              (:type-data            . "データフォーマット(&D)")
+                              (:type-general         . "汎用(&G)")
+                              (:type-misc            . "その他(&M)")
+                              (:user                 . "ユーザ(&U)")))
         (outline-type-hash (make-hash-table))
         outline-type-symbol outline-type-name gen popup-menu)
     ;; ショートカットジェネレータ
@@ -3675,14 +3601,18 @@ buffer-node と TreeView 上の階層構造から判定する。"
       (let ((func-symbol (first x)) (func-name (second x)) (func-type (third x)))
         (cond ((member :user func-type)
                (push x (gethash :user outline-type-hash)))
-              ((member :language func-type)
-               (push x (gethash :language outline-type-hash)))
-              ((member :generic func-type)
-               (push x (gethash :generic outline-type-hash)))
-              ((member :format func-type)
-               (push x (gethash :format outline-type-hash)))
+              ((member :type-program func-type)
+               (push x (gethash :type-program outline-type-hash)))
+              ((member :type-program-general func-type)
+               (push x (gethash :type-program-general outline-type-hash)))
+              ((member :type-document func-type)
+               (push x (gethash :type-document outline-type-hash)))
+              ((member :type-data func-type)
+               (push x (gethash :type-data outline-type-hash)))
+              ((member :type-general func-type)
+               (push x (gethash :type-general outline-type-hash)))
               (t
-               (push x (gethash :misc outline-type-hash))))
+               (push x (gethash :type-misc outline-type-hash))))
         (push x (gethash :all outline-type-hash))))
     ;; メニュー作成
     (dolist (outline-type outline-type-alist)
@@ -3731,13 +3661,15 @@ buffer-node と TreeView 上の階層構造から判定する。"
 ;;----------------------------------------------------------------------------
 (defvar *outline-tree-create-outline-function-info-menu* nil)
 (defun outline-tree-create-outline-function-info-menu-gen ()
-  (let ((outline-type-alist '((:all      . "全て(&A)")
-                              (nil       . nil)
-                              (:generic  . "一般解析(&G)")
-                              (:language . "言語(&L)")
-                              (:format   . "ファイルフォーマット(&F)")
-                              (:misc     . "その他(&M)")
-                              (:user     . "ユーザ(&U)")))
+  (let ((outline-type-alist '((:all                  . "全て(&A)")
+                              (nil                   . nil)
+                              (:type-program         . "プログラミング個別(&P)")
+                              (:type-program-general . "プログラミング汎用(&Q)")
+                              (:type-document        . "文書フォーマット(&W)")
+                              (:type-data            . "データフォーマット(&D)")
+                              (:type-general         . "汎用(&G)")
+                              (:type-misc            . "その他(&M)")
+                              (:user                 . "ユーザ(&U)")))
         (outline-type-hash (make-hash-table))
         outline-type-symbol outline-type-name gen popup-menu)
     ;; ショートカットジェネレータ
@@ -3761,14 +3693,18 @@ buffer-node と TreeView 上の階層構造から判定する。"
       (let ((func-symbol (first x)) (func-name (second x)) (func-type (third x)))
         (cond ((member :user func-type)
                (push x (gethash :user outline-type-hash)))
-              ((member :language func-type)
-               (push x (gethash :language outline-type-hash)))
-              ((member :generic func-type)
-               (push x (gethash :generic outline-type-hash)))
-              ((member :format func-type)
-               (push x (gethash :format outline-type-hash)))
+              ((member :type-program func-type)
+               (push x (gethash :type-program outline-type-hash)))
+              ((member :type-program-general func-type)
+               (push x (gethash :type-program-general outline-type-hash)))
+              ((member :type-document func-type)
+               (push x (gethash :type-document outline-type-hash)))
+              ((member :type-data func-type)
+               (push x (gethash :type-data outline-type-hash)))
+              ((member :type-general func-type)
+               (push x (gethash :type-general outline-type-hash)))
               (t
-               (push x (gethash :misc outline-type-hash))))
+               (push x (gethash :type-misc outline-type-hash))))
         (push x (gethash :all outline-type-hash))))
     ;; メニュー作成
     (add-menu-item *outline-tree-create-outline-function-info-menu* nil
@@ -3915,19 +3851,25 @@ buffer-node と TreeView 上の階層構造から判定する。"
 (require "outline-tree/cr-ini")
 (require "outline-tree/cr-texinfo")
 (require "outline-tree/cr-rd")
+(require "outline-tree/cr-Markdown")
+(require "outline-tree/cr-org-mode")
 (require "outline-tree/cr-LaTeX")
 (require "outline-tree/cr-lisp")
 (require "outline-tree/cr-perl")
 (require "outline-tree/cr-VB-like")
 (require "outline-tree/cr-ASP")
 (require "outline-tree/cr-XTAGS")
+(require "outline-tree/cr-ctags")
+(require "outline-tree/cr-global")
 (require "outline-tree/cr-list-function")
 (require "outline-tree/cr-grep")
 (require "outline-tree/cr-2ch")
 (require "outline-tree/cr-indent")
 (require "outline-tree/cr-sted")
 (require "outline-tree/cr-eMemoPad")
+(require "outline-tree/cr-FreeMind")
 (require "outline-tree/cr-RFC")
+(require "outline-tree/cr-xsv")
 (require "outline-tree/cr-blank-line")
 (require "outline-tree/cr-xdoc2txt-pdf")
 (require "outline-tree/cr-xdoc2txt-excel")
@@ -3945,10 +3887,10 @@ buffer-node と TreeView 上の階層構造から判定する。"
 ;;----------------------------------------------------------------------------
 (gc)
 (require "outline-tree/output")
-(require "outline-tree/op-heading-html")
-(require "outline-tree/op-heading-html-frame")
-(require "outline-tree/op-range-html")
-(require "outline-tree/op-range-html-frame")
+(require "outline-tree/output-html")
+(require "outline-tree/output-html-range")
+(require "outline-tree/output-html-heading")
+(require "outline-tree/output-dialog")
 
 ;;----------------------------------------------------------------------------
 ;; ツールバー/app-menu
@@ -3965,39 +3907,51 @@ buffer-node と TreeView 上の階層構造から判定する。"
   (long-operation
     (let ((count 0))
       (save-excursion
-        (dolist (buffer buffers)
-          (when (need-buffer-save-p buffer)
-            (set-buffer buffer)
-            (if (not (file-visited-p))
-                (progn
-                  (refresh-screen)
-                  (if (yes-no-or-cancel-p "~aをセーブしますか?" buffer)
-                      (when (call-interactively fn)
-                        (setq count (1+ count)))
-                    (not-modified)))
-              (when (or (not verbose)
-                        (progn
-                          (refresh-screen)
-                          (yes-no-or-cancel-p "~a~%をセーブしますか?"
-                                              (get-buffer-file-name))))
-                (save-buffer)
-                (setq count (1+ count)))))))
-      (message "~d個のファイルをセーブしました" count))))
+        (handler-case
+            (dolist (buffer buffers)
+              (when (need-buffer-save-p buffer)
+                (set-buffer buffer)
+                (if (not (file-visited-p))
+                    (progn
+                      (refresh-screen)
+                      (if (yes-no-or-cancel-p "~aをセーブしますか?" buffer)
+                          (when (call-interactively fn)
+                            (setq count (1+ count)))
+                        (not-modified)))
+                  (when (or (not verbose)
+                            (progn
+                              (refresh-screen)
+                              (yes-no-or-cancel-p "~a~%をセーブしますか?"
+                                                  (get-buffer-file-name))))
+                    (save-buffer)
+                    (setq count (1+ count))))))
+          (error (c)
+            (msgbox "~a~%" (si:*condition-string c))
+            (return-from outline-tree-save-some-buffers nil))))
+      (message "~d個のファイルをセーブしました" count)
+      t)))
 
 (defun outline-tree-kill-folder-file-buffers (folder &optional not-verbose)
   (let (file buffers)
-    (dolist (buffer (buffer-list))
-      (when (and (setq file (get-buffer-file-name buffer))
-                 (path-equal folder (directory-namestring file)))
-        (push buffer buffers)))
+    (if (file-exist-p folder)
+        (dolist (buffer (buffer-list))
+          (when (and (setq file (get-buffer-file-name buffer))
+                     (path-equal folder (directory-namestring file)))
+            (push buffer buffers)))
+      (progn
+        (dolist (buffer (buffer-list))
+          (when (and (setq file (get-buffer-file-name buffer))
+                     (string-equal
+                      (string-right-trim "/" folder)
+                      (string-right-trim "/" (directory-namestring file))))
+            (push buffer buffers)))))
     (setq buffers (nreverse buffers))
-    (outline-tree-save-some-buffers (not not-verbose) buffers)
-    (prog1
-        (dolist (buffer buffers t)
-          (kill-buffer buffer))
-      (winapi:InvalidateRect (get-window-handle) 0 1)
-      (winapi:UpdateWindow (get-window-handle))
-      (refresh-screen))))
+    (when (outline-tree-save-some-buffers (not not-verbose) buffers)
+      (dolist (buffer buffers t)
+        (kill-buffer buffer)))
+    (winapi:InvalidateRect (get-window-handle) 0 1)
+    (winapi:UpdateWindow (get-window-handle))
+    (refresh-screen)))
 
 (defun outline-tree-delete-category-buffers (category-node)
   (let (delete-buffer-p)

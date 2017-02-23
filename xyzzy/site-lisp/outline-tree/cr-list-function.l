@@ -1,18 +1,25 @@
 ;;; -*- Mode: Lisp; Package: OUTLINE-TREE2 -*-
 ;;; cr-list-function.l --- outline-tree
 
-;; Copyright (C) 2001-2006 OHKUBO Hiroshi <ohkubo@s53.xrea.com>
+;; Copyright (C) 2001-2009 OHKUBO Hiroshi <ohkubo@s53.xrea.com>
 
 ;; Author: OHKUBO Hiroshi <ohkubo@s53.xrea.com>
-;; Time-stamp: <2006/03/30 23:54:21 +0900>
+;; Time-stamp: <2009/04/03 14:27:03 +0900>
 
 ;;; Code:
 
 (provide "outline-tree/cr-list-function")
 
+(require "listfn")
 (require "outline-tree/outline-tree")
 
 (in-package "outline-tree2")
+
+(defun outline-tree-create-outline-list-function-possible-p (buffer)
+  (save-excursion
+    (set-buffer buffer)
+    (and (boundp 'ed::build-summary-function)
+         ed::build-summary-function)))
 
 ;; ed::build-summary-function 解析
 (defun outline-tree-create-outline-list-function (root-node)
@@ -45,7 +52,7 @@
        title root-node
        :whole-range (cons from nil)))))
 (outline-tree-add-create-outline-function
- 'outline-tree-create-outline-list-function "List Function" '()
+ 'outline-tree-create-outline-list-function "List Function" '(:type-program-general)
  "バッファに対応する ed::build-summary-function の関数を元に関数一覧を
 作成し表示します。")
 

@@ -1,10 +1,10 @@
 ;;; -*- Mode: Lisp; Package: OUTLINE-TREE2 -*-
 ;;; cr-regexp.l --- outline-tree
 
-;; Copyright (C) 2001-2005 OHKUBO Hiroshi <ohkubo@s53.xrea.com>
+;; Copyright (C) 2001-2009 OHKUBO Hiroshi <ohkubo@s53.xrea.com>
 
 ;; Author: OHKUBO Hiroshi <ohkubo@s53.xrea.com>
-;; Time-stamp: <2006/08/24 17:09:43 +0900>
+;; Time-stamp: <2009/04/03 14:24:48 +0900>
 
 ;;; Code:
 
@@ -39,7 +39,7 @@
    :line-oriented t
    :title-converter nil))
 (outline-tree-add-create-outline-function
- 'outline-tree-create-outline-regexp "正規表現" '(:generic :line-oriented :sequential)
+ 'outline-tree-create-outline-regexp "**正規表現 (ダイアログ設定有)" '(:type-general :line-oriented :sequential)
  "正規表現で階層を解析し、見出しをアウトライン表示します。
 
 [アウトラインツリー設定]-[正規表現] で解析方法のカスタマイズが可能です。

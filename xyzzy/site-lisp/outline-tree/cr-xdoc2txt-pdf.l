@@ -1,10 +1,10 @@
 ;;; -*- Mode: Lisp; Package: OUTLINE-TREE2 -*-
 ;;; cr-xdoc2txt-pdf.l --- outline-tree
 
-;; Copyright (C) 2001-2005 OHKUBO Hiroshi <ohkubo@s53.xrea.com>
+;; Copyright (C) 2001-2009 OHKUBO Hiroshi <ohkubo@s53.xrea.com>
 
 ;; Author: OHKUBO Hiroshi <ohkubo@s53.xrea.com>
-;; Time-stamp: <2005/11/12 14:11:01 +0900>
+;; Time-stamp: <2009/04/03 14:26:34 +0900>
 
 ;;; Code:
 
@@ -41,7 +41,7 @@
            :sub-type :heading-node)
           (return))))))
 (outline-tree-add-create-outline-function
- 'outline-tree-create-outline-xdoc2txt-pdf "xdoc2txt : PDF (ページ区切り)" '(:format :line-oriented :sequential)
+ 'outline-tree-create-outline-xdoc2txt-pdf "xdoc2txt : PDF (ページ区切り)" '(:type-data :line-oriented :sequential)
  "xdoc2txt によって変換された PDF フォーマットを、ページ番号で区切られた
 テキストを 1 ノードとしてアウトライン表示します。
 アウトライン上にはページ番号を表示します。")

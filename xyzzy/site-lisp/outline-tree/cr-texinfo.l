@@ -1,10 +1,10 @@
 ;;; -*- Mode: Lisp; Package: OUTLINE-TREE2 -*-
 ;;; cr-texinfo.l --- outline-tree
 
-;; Copyright (C) 2001-2005 OHKUBO Hiroshi <ohkubo@s53.xrea.com>
+;; Copyright (C) 2001-2009 OHKUBO Hiroshi <ohkubo@s53.xrea.com>
 
 ;; Author: OHKUBO Hiroshi <ohkubo@s53.xrea.com>
-;; Time-stamp: <2005/11/12 14:14:48 +0900>
+;; Time-stamp: <2009/04/03 14:26:15 +0900>
 
 ;;; Code:
 
@@ -35,7 +35,7 @@
         :root-node root-node
         :get-range-func #'outline-tree-create-outline-texinfo-get-range-item))))
 (outline-tree-add-create-outline-function
- 'outline-tree-create-outline-texinfo "Texinfo" '(:format :line-oriented :sequential)
+ 'outline-tree-create-outline-texinfo "Texinfo" '(:type-document :line-oriented :sequential)
  "Texinfo フォーマットをアウトライン表示します。")
 
 ;;

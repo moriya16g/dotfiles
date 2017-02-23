@@ -1,10 +1,10 @@
 ;;; -*- Mode: Lisp; Package: OUTLINE-TREE2 -*-
 ;;; cr-xdoc2txt-excel.l --- outline-tree
 
-;; Copyright (C) 2001-2005 OHKUBO Hiroshi <ohkubo@s53.xrea.com>
+;; Copyright (C) 2001-2009 OHKUBO Hiroshi <ohkubo@s53.xrea.com>
 
 ;; Author: OHKUBO Hiroshi <ohkubo@s53.xrea.com>
-;; Time-stamp: <2005/11/12 14:11:25 +0900>
+;; Time-stamp: <2009/04/03 14:26:28 +0900>
 
 ;;; Code:
 
@@ -25,7 +25,7 @@
    :layer-regexp-list-order :non-miss
    :sub-type :heading-node))
 (outline-tree-add-create-outline-function
- 'outline-tree-create-outline-xdoc2txt-excel "xdoc2txt : Excel" '(:format :line-oriented :sequential)
+ 'outline-tree-create-outline-xdoc2txt-excel "xdoc2txt : Excel" '(:type-data :line-oriented :sequential)
  "xdoc2txt によって変換された Excel フォーマットをアウトライン表示します。
 アウトライン上にはシート名を表示します。")
 

@@ -1,10 +1,10 @@
 ;;; -*- Mode: Lisp; Package: OUTLINE-TREE2 -*-
 ;;; cr-html-info-and-heading.l --- outline-tree
 
-;; Copyright (C) 2001-2006 OHKUBO Hiroshi <ohkubo@s53.xrea.com>
+;; Copyright (C) 2001-2009 OHKUBO Hiroshi <ohkubo@s53.xrea.com>
 
 ;; Author: OHKUBO Hiroshi <ohkubo@s53.xrea.com>
-;; Time-stamp: <2006/10/21 17:16:03 +0900>
+;; Time-stamp: <2009/04/03 14:25:28 +0900>
 
 ;;; Code:
 
@@ -28,7 +28,7 @@
        (outline-tree-create-outline-css root-node)))
   (outline-tree-create-outline-html-heading root-node))
 (outline-tree-add-create-outline-function
- 'outline-tree-create-outline-html-info-and-heading "HTML (情報＆見出し)" '(:language)
+ 'outline-tree-create-outline-html-info-and-heading "HTML (情報＆見出し)" '(:type-document)
  "HTML ファイルを各種情報とともに <H[1-6]>, <li> タグを元に見出し表示します。")
 
 ;;

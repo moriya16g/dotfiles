@@ -3,10 +3,10 @@
                             outline-tree
                             ------------
 
-    Copyright (C) 2001-2006 OHKUBO Hiroshi <ohkubo@s53.xrea.com>
+    Copyright (C) 2001-2012 OHKUBO Hiroshi <ohkubo@s53.xrea.com>
 
     Author: OHKUBO Hiroshi <ohkubo@s53.xrea.com>
-    Time-stamp: <2006/02/06 15:03:12 +0900>
+    Time-stamp: <2012/03/30 21:39:50 +0900>
 ======================================================================
 
 ■概要
@@ -90,7 +90,7 @@
   <http://www.opensource.org/licenses/bsd-license.php>
 
 
-  Copyright (C) 2001-2006, OHKUBO Hiroshi.  All rights reserved.
+  Copyright (C) 2001-2012, OHKUBO Hiroshi.  All rights reserved.
 
   Redistribution and use in source and binary forms, with or without
   modification, are permitted provided that the following conditions
@@ -249,14 +249,12 @@
 
 ■ツールバー
 
-  アウトラインツリーの開閉（起動・終了）を行います。
-  アウトラインツリーが起動しオープンしている場合、アイコンは押された
+  アウトラインツリーの起動・終了を行います。
+  アウトラインツリーが起動している場合、アイコンは押された
   状態で表示されます。
 
-    未起動時  ：（通常状態の）アイコンをクリック⇒起動し、オープン
-    クローズ時：（通常状態の）アイコンをクリック⇒オープン
-    オープン時：（押下状態の）アイコンを Ctrl を押しながらクリック⇒終了
-                （押下状態の）アイコンをクリック⇒クローズ
+    未起動時：（通常状態の）アイコンをクリック⇒起動
+    起動時  ：（押下状態の）アイコンをクリック⇒終了
 
 ■設定ファイル
 
@@ -294,6 +292,10 @@
 
   ・What is RD? What is RDtool?
     http://www2.pos.to/~tosh/ruby/rdtool/ja/whats.html
+
+  ○Markdown
+  ・Daring Fireball: Markdown Syntax Documentation
+    http://daringfireball.net/projects/markdown/syntax
 
   ○Hiki
   ・Hikiトップページ

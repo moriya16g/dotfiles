@@ -1,10 +1,10 @@
 ;;; -*- Mode: Lisp; Package: OUTLINE-TREE2 -*-
 ;;; cr-RFC.l --- outline-tree
 
-;; Copyright (C) 2001-2006 OHKUBO Hiroshi <ohkubo@s53.xrea.com>
+;; Copyright (C) 2001-2009 OHKUBO Hiroshi <ohkubo@s53.xrea.com>
 
 ;; Author: OHKUBO Hiroshi <ohkubo@s53.xrea.com>
-;; Time-stamp: <2006/01/29 08:31:23 +0900>
+;; Time-stamp: <2009/04/03 14:26:05 +0900>
 
 ;;; Code:
 
@@ -63,7 +63,7 @@
      :whole-range (cons from nil)
      :sub-type (if range-node-exist-p :heading-node nil))))
 (outline-tree-add-create-outline-function
- 'outline-tree-create-outline-RFC "RFC" '(:format :sequential)
+ 'outline-tree-create-outline-RFC "RFC" '(:type-document :sequential)
  "RFC の見出しをアウトライン表示します。")
 
 ;;; cr-RFC.l ends here
