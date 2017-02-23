@@ -1,7 +1,7 @@
 ;; Language
 (set-language-environment "Japanese")
 
-;;; フォント
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; フォント
 ;; abcdefghijklmnopqrstuvwxyz 
 ;; ABCDEFGHIJKLMNOPQRSTUVWXYZ
 ;; `1234567890-=\[];',./
@@ -14,10 +14,16 @@
 ;; ┌─────────────────────────────┐
 ;; │　　　　　　　　　　　　　罫線                            │
 ;; └─────────────────────────────┘
+;;
+; ★環境に合わせて使用するフォントを書き換える
 (set-face-attribute 'default nil
 ;                     :family "EcoCoding"
-                      :family "Mononoki"
-                    :height 90)
+                     :family "Mononoki"
+;                     :family "IosevkaCC"
+;                     :family "CamingoCode"
+;                     :family "Fira Mono"
+;                     :family "Consolas"
+                     :height 90)
 (set-fontset-font
  nil 'japanese-jisx0208
   (font-spec :family "ＳＨ Ｇ30-M"))
@@ -28,6 +34,7 @@
                 '((".*メイリオ.*" . 1.0)
                   (".*ＭＳ ゴシック.*" . 1.2)
                   (".*ＭＳ 明朝.*" . 1.2)
+                  (".*游ゴシック.*" . 1.1)
                   (".*Myrica M.*" . 1.1)
                   (".*ＳＨ Ｇ30-M.*" . 1.1)
                   (".*ARISAKA-等幅.*" . 1.1)
@@ -40,11 +47,27 @@
 ;;; 文字飾りを有効にする
 (setq w32-enable-synthesized-fonts t)
 
-;(add-to-list 'dynamic-library-alist
-;'(imagemagick "c:/cygwin/bin/cygMagickWand-6.Q16-2.dll"))
-;'(imagemagick "C:/Program\ Files/ImageMagick-6.9.3-Q16/CORE_RL_wand_.dll"))
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; 音を鳴らさない
+(setq visible-bell t)
 
-;;; C/migemo の設定
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; backspace を C-h に
+(keyboard-translate ?\C-h ?\C-?)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; カラーテーマ
+; ★環境に合わせて使用するカラーテーマを書き換える
+(require 'color-theme)
+(color-theme-initialize)
+;(color-theme-charcoal-black) ;charcoal-black
+;(color-theme-renegade) ;Renegade
+;(require 'zenburn) (zenburn) ; zenburn を適用する場合
+;(require 'monokai-theme) ; monokai を適用する場合
+;(require 'gotham-theme) ; gotham を適用する場合
+;(require 'cherry-blossom-theme) ; cherry-blossom を適用する場合
+;;; 新カラーテーマ
+;(require 'caroline-theme) ; caroline を適用する場合
+(require 'caroline-m-theme) ; my caroline を適用する場合
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; C/migemo の設定
 (require 'migemo)
 (setq migemo-command "cmigemo")
 (setq migemo-options '("-q" "--emacs" "-i" "\g"))
@@ -61,26 +84,10 @@
 ;; migemo 初期化
 (load-library "migemo")
 (migemo-init)
-(setq search-whitespace-regexp nil) ;;migemo C-sでカーソルが飛ぶために必要
+;; migemo C-s でカーソルが飛ぶために必要
+(setq search-whitespace-regexp nil)
 
-;;; 音を鳴らさない
-(setq visible-bell t)
-
-;;; カラーテーマ
-(require 'color-theme)
-(color-theme-initialize)
-;(color-theme-charcoal-black) ;charcoal-black
-;(color-theme-renegade) ;Renegade
-;(require 'zenburn) (zenburn) ; zenburn を適用する場合
-;(require 'monokai-theme) ; monokai を適用する場合
-;(require 'gotham-theme) ; gotham を適用する場合
-;(require 'cherry-blossom-theme) ; cherry-blossom を適用する場合
-;(require 'caroline-theme) ; caroline を適用する場合
-(require 'caroline-m-theme) ; my caroline を適用する場合
-
-
-
-;;; Mew
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; Mew
 (autoload 'mew "mew" nil t)
 (autoload 'mew-send "mew" nil t)
 (autoload 'mew-user-agent-compose "mew" nil t)
@@ -91,7 +98,7 @@
 		 '(cp51932-decode japanese-ucs-cp932-to-jis-map))
 (coding-system-put 'iso-2022-jp :encode-translation-table
 		   '(cp51932-encode))
-;; 表示ウエイトをなくす
+;; 表示ウエイトをなくす (ウエイトがあると windows での mew の動作が遅くなる)
 (setq w32-pipe-read-delay 0)
 ;; cygwin で GnuPG を使うために fakecygty を
 ;(setq mw32-process-wrapper-alist
@@ -100,16 +107,11 @@
 ;; ~/Mail の場所変更
 (setq mew-mail-path "c:/cygwin/home/moriya/Mail")
 
-;;; vc-mode
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; vc-mode
 ;; Windows では vc git が遅いせいでファイルの保存に時間がかかってしまうため無効化
 (setq vc-handled-backends nil)
 
-;;; Image+
-;; see https://github.com/mhayashi1120/Emacs-imagex
-;(require 'image+)
-;(imagex-auto-adjust-mode 1)
-
-;;; org-mode
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; org-mode
 ;(require 'org-install)
 ;; 拡張子がorgのファイルを開いた時，自動的にorg-modeにする
 (add-to-list 'auto-mode-alist '("\\.org$" . org-mode))
@@ -126,8 +128,10 @@
 ;(global-font-lock-mode 1)                     ; すべてのバッファで有効
 (add-hook 'org-mode-hook 'turn-on-font-lock)  ; org-modeのバッファのみで有効
 ;; org-default-notes-fileのディレクトリ
+; ★環境に合わせてディレクトリの場所を書き換える
 (setq org-directory "~/usr/mem/")
 ;; org-default-notes-fileのファイル名
+; ★環境に合わせてファイル名を書き換える
 (setq org-default-notes-file "0index.org")
 ;; リンクをリターンキーで開く
 (setq org-return-follows-link t)
@@ -172,7 +176,7 @@
 (setq org-mobile-directory "~/usr/mem/org_mobile")
 (setq org-mobile-inbox-for-pull "~/usr/mem/8_mobileorg.org")
 
-;;; gtags
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; Gnu Global (gtags)
 (autoload 'gtags-mode "gtags" "" t)
 (setq gtags-mode-hook
       '(lambda ()
@@ -185,11 +189,11 @@
          ))
 (setq gtags-path-style 'relative)
 
-;;; ruby-mode
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; ruby-mode
 (setq ruby-indent-level 4)
 (setq ruby-indent-tabs-mode nil)
 
-;;; c-mode, c++-mode
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; c-mode, c++-mode
 (add-hook 'c-mode-common-hook
           '(lambda ()
              ;;; K&R のスタイルを使う
@@ -201,28 +205,27 @@
              (setq indent-tabs-mode nil)
              ))
 
-;;; zlc
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; zlc
 (require 'zlc)
 (zlc-mode t)
 ;; 候補一覧を表示する際に、最初の項目を選択状態にする
 (setq zlc-select-completion-immediately t)
 
-;;; sr-speedbar
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; sr-speedbar (なぜか Emacs25.1 でうまく動かせない……)
 ;(require 'sr-speedbar)
 ;(setq sr-speedbar-right-side nil)
 
-;;; imenu-tree
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; imenu-tree
 (add-hook 'org-mode-hook
   (lambda()
     (require 'imenu-tree)))
 (global-set-key (kbd "M-h") 'imenu-tree)
 
-;;; backspace を C-h に
-(keyboard-translate ?\C-h ?\C-?)
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; 使用するシェルの場所
+(setq shell-file-name "c:/cygwin/usr/bin/zsh")
 
-;;; 使用するシェルの場所
-(setq shell-file-name "c:/cygwin/bin/zsh")
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; custom setting
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
